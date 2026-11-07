@@ -117,7 +117,7 @@
     "esbuild": "0.28.2",
     "jose": "6.2.12",
     "pretendard": "1.3.9",
-    "ts-morph": "^24.0.0",
+    "ts-morph": "^28.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "7.3.6",
