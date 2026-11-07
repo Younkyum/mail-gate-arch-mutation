@@ -98,7 +98,7 @@
     "@aws-sdk/client-ssm": "3.1141.0",
     "@aws-sdk/s3-request-presigner": "3.1141.0",
     "imapflow": "^1.0.0",
-    "pdfjs-dist": "6.4.299",
+    "pdfjs-dist": "6.5.438",
     "pg": "^8.23.0",
     "postal-mime": "4.0.0"
   },
