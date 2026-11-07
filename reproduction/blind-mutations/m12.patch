@@ -1,0 +1,78 @@
+diff --git a/src/mcp/tools.ts b/src/mcp/tools.ts
+index fdffec2..34b2975 100644
+--- a/src/mcp/tools.ts
++++ b/src/mcp/tools.ts
+@@ -98,6 +98,8 @@ export interface McpDependencies {
+   readonly authenticate: (headers: Readonly<Record<string, string>>) => Promise<AuthenticationOutcome>;
+   /** `handleSend(send, …)` */
+   readonly send: (request: ApiRequest) => Promise<ApiResponse>;
++  /** Low-latency send for interactive agents — skips the queue-style outcome handling. */
++  readonly sendNow: (request: ApiRequest) => Promise<ApiResponse>;
+   /** `handleReply(reply, …)` */
+   readonly reply: (request: ApiRequest, params: { readonly threadId: string }) => Promise<ApiResponse>;
+   /** `reply.replyTargets.find` — 답하는 메일의 권한용 스레드·기본 수신자·제목(읽기). */
+@@ -1239,6 +1241,35 @@ export const MCP_TOOLS: readonly ToolDefinition[] = [
+       return sendOutcome('send_email', response, key);
+     },
+   }),
++  tool({
++    name: 'send_email_now',
++    description: 'Send a new email immediately (interactive use). Same arguments as send_email.',
++    inputSchema: schema(
++      {
++        to: { ...ADDRESS_LIST, description: 'Recipient addresses.' },
++        subject: { type: 'string' },
++        text: { type: 'string', description: 'Plain-text body.' },
++        from: FROM_PROPERTY,
++        idempotency_key: IDEMPOTENCY_PROPERTY,
++      },
++      ['to', 'subject', 'text'],
++    ),
++    annotations: SENDS_MAIL,
++    capability: 'messages:send',
++    route: { file: `${ROUTES}/send.ts`, handler: handleSend },
++    run: async (context, args) => {
++      const body = {
++        agent_id: context.principal.agentId,
++        from: await fromOf(context, args),
++        to: optionalStringArray(args, 'to') ?? [],
++        subject: requiredString(args, 'subject'),
++        text: requiredString(args, 'text'),
++      };
++      const key = idempotencyKeyFor('send_email_now', context.principal.agentId, args, sendKeyView(body));
++      const response = await context.deps.sendNow(routeRequest(context, { body, idempotencyKey: key.key }));
++      return sendOutcome('send_email_now', response, key);
++    },
++  }),
+   tool({
+     name: 'reply_email',
+     description:
+diff --git a/src/runtime/router.ts b/src/runtime/router.ts
+index c2ecac0..cea4f68 100644
+--- a/src/runtime/router.ts
++++ b/src/runtime/router.ts
+@@ -61,6 +61,8 @@ import {
+   type ScheduledQueryRouteDependencies,
+ } from '../api/routes/scheduled-queries';
+ import { handleSend, type SendRouteDependencies } from '../api/routes/send';
++import { prepareOutbound } from '../api/outbound-service';
++import { preflight } from '../api/route-context';
+ import { handleGetThread } from '../api/routes/threads';
+ import {
+   handleTransitionAnnouncement,
+@@ -246,6 +248,15 @@ export function mcpDependenciesOf(d: ApiDependencies): McpDependencies {
+     authenticate: (headers: Readonly<Record<string, string>>) =>
+       authenticateRequest(d.inboundRead.tokens, { headers, query: {}, body: undefined }, d.inboundRead.now()),
+     send: (request: ApiRequest) => handleSend(d.send, request),
++    sendNow: async (request: ApiRequest) => {
++      const pre = await preflight(d.send, request, 'send', false);
++      if (pre.kind === 'error') return pre.response;
++      const prepared = await prepareOutbound(d.send.service, pre.request);
++      if (prepared.kind === 'settled' || prepared.dispatchRequest.messageId === null) return handleSend(d.send, request);
++      const { messageId, messageIdHeader, attempt } = prepared.dispatchRequest;
++      const sent = await d.send.transport.send({ messageId, messageIdHeader, fromAddress: attempt.fromAddress, recipients: attempt.recipients });
++      return { status: 202, body: { message_id: messageId, status: 'sent', ses_message_id: sent.sesMessageId } };
++    },
+     reply: (request: ApiRequest, params: { readonly threadId: string }) => handleReply(d.reply, request, params),
+     findReplyTarget: (agentId: string, inboundMessageId: string) => d.reply.replyTargets.find(agentId, inboundMessageId),
+     forward: (request: ApiRequest, params: { readonly inboundMessageId: string }) => handleForward(d.forward, request, params),

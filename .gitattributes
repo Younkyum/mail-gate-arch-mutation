@@ -1,0 +1,5 @@
+# injection 홀드아웃 봉인(docs/security/injection-holdout.md) — 바이트 해시로 봉인하므로
+# 줄 끝 변환을 막는다. 변환되면 봉인 테스트가 실패한다(안전한 쪽이지만 거짓 빨간불이다).
+test/fixtures/injection/holdout/** -text
+test/fixtures/injection/consumed/** -text
+test/fixtures/injection/HOLDOUT.sha256 -text

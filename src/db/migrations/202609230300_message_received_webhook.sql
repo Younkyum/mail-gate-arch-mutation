@@ -1,0 +1,13 @@
+-- 202609230300_message_received_webhook.sql
+-- P3c — 웹훅 이벤트 `message.received` (계획 §6 P3 "inbound 조회 API + webhook").
+--
+-- 에이전트는 폴링하지 않는다(§3.4 1조) — 수신도 같다. 소비자가 수신 행을 기록하는 **같은 트랜잭션**에서
+-- outbox 에 적힌다(`inbound-store.ts` recordMessage). 페이로드는 식별자·시각뿐(`webhooks/events.ts`, B5).
+--
+-- ★ **격리된 메일은 발화하지 않는다.** 이벤트를 받은 에이전트는 그 id 로 본문을 조회하는데, 격리 메일은
+--   에이전트 컨텍스트에서 제외돼 있으므로(404) 이벤트는 "읽을 수 없는 메일이 왔다" 는 신호가 된다 —
+--   존재 사실만으로 에이전트를 움직이는 경로다(재시도·재요청 루프). 격리 사실은 소유자 쪽 문제이고,
+--   에이전트에게는 목록 응답의 격리 **건수**만 간다(`api/inbound-view.ts` 판단 기록).
+--
+-- 열거형 값 추가는 되돌릴 수 없다(append-only). 이름은 `message.sent` 와 짝을 맞춘다.
+ALTER TYPE webhook_event_type ADD VALUE IF NOT EXISTS 'message.received';

@@ -1,0 +1,14 @@
+{
+  "name": "atmark-ai-watch-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Mac Studio AI mail watch worker native runtime deps (onnxruntime-node + tokenizers). Installed by setup.sh, not part of the root pnpm project.",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "dependencies": {
+    "onnxruntime-node": "1.30.0",
+    "tokenizers": "0.23.2"
+  }
+}

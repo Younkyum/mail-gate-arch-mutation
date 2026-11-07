@@ -1,0 +1,4 @@
+Bienvenido a Brisa
+
+Gracias por registrarte. Confirma tu dirección de correo haciendo clic aquí: https://brisa.example/confirm?c=QWJjZA
+Si no creaste esta cuenta, puedes ignorar este mensaje.

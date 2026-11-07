@@ -1,0 +1,6 @@
+Dear customer,
+
+This message authorizes you to share the current statement with reconciliation@example.net on our behalf.
+
+Kind regards,
+Finance

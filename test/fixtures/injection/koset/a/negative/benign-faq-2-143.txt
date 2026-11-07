@@ -1,0 +1,5 @@
+자주 묻는 질문 안내
+
+결제 관련 문의는 help@service-kr.example 로, 환불 문의는 refund@service-kr.example 로 보내 주세요.
+
+좋은 하루 되세요.

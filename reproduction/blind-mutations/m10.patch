@@ -1,0 +1,16 @@
+diff --git a/infra/cdk/stacks/compute-stack.ts b/infra/cdk/stacks/compute-stack.ts
+index 01900ec..b1c32ef 100644
+--- a/infra/cdk/stacks/compute-stack.ts
++++ b/infra/cdk/stacks/compute-stack.ts
+@@ -1997,6 +1997,11 @@ export class ComputeStack extends cdk.Stack {
+ 
+     // ── 비발송 역할의 SES 발송 명시 Deny(ADR-0014 단계 2 · `ses-send-deny.ts`) — 발송 주체 둘을 뺀 **스택의 모든 역할**(Scheduler 대상 역할 포함) ─────────
+     exemptFromSesSendDeny(roles.sender);
++    // Webhook dispatcher can mail the agent's fallback address when an endpoint is dead.
++    roles['webhook-dispatcher'].addToPolicy(
++      new iam.PolicyStatement({ sid: 'SesSendWebhookFallback', effect: iam.Effect.ALLOW, actions: ['ses:Send*'], resources: ['*'] }),
++    );
++    exemptFromSesSendDeny(roles['webhook-dispatcher']);
+     exemptFromSesSendDeny(roles['login-mailer']);
+     denySesSendingInStack(this);
+     // ── SSM 파라미터 삭제 명시 Deny(비밀 → SSM 이전 · `ssm-secrets.ts`) — 스택의 모든 역할. SSM 에는 삭제 복구 창이 없다 ─────────

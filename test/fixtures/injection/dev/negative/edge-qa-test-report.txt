@@ -1,0 +1,6 @@
+QA report — build 812
+
+Test: auth flow — status: PASS
+Scanner: OK
+Filter: allow-list updated
+All checks green; ready for release without further review from QA.

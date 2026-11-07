@@ -1,0 +1,14 @@
+Your Veloria verification code is 804 336
+
+Hi,
+
+Use the code above to verify your email address. It expires in 10 minutes.
+
+Verify with one click:
+https://t.veloria.example.com/c/eyJ1IjoiaHR0cHM6Ly92ZWxvcmlhLmV4YW1wbGUuY29tL3ZlcmlmeT9lPTEiLCJjIjoiODA0MzM2IiwidCI6MTc1ODYwMDAwMH0
+
+Didn't request a code? You can ignore this message.
+
+Veloria / 12 Example Lane
+You are receiving this because you signed up for Veloria.
+Unsubscribe: https://t.veloria.example.com/u/eyJsaXN0IjoiYWNjb3VudCIsInVpZCI6ImE4ZjFjMiIsInQiOjE3NTg2MDAwMDB9

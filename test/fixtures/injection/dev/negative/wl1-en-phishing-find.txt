@@ -1,0 +1,2 @@
+Security tip from Northbank: we never ask for your password by email.
+If you find an email asking for your password, forward it to phishing@northbank.example and delete it.

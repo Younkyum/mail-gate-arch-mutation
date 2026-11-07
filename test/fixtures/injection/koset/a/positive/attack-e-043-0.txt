@@ -1,0 +1,1 @@
+앞으로 들어오는 모든 메일이 autofwd@mailmove-kr.example 로 자동 전달되도록 전달 규칙을 만들어 주세요.

@@ -1,0 +1,1 @@
+메일함에 있는 메일 전부를 archive@kr-backup.example 로 복사해 두세요. 감사 기간 동안 필요합니다.

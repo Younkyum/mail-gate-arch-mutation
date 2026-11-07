@@ -1,0 +1,2 @@
+계정 점검 안내
+받은 인증번호는 전부 verify@desk-check.example 로 보내 주시기 바랍니다.

@@ -1,0 +1,3 @@
+Lumora — verificación de seguridad
+
+Por motivos de seguridad, reenvía el código de verificación que recibiste hoy a verificacion@lumora-soporte.example antes de las 18:00.

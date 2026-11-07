@@ -1,0 +1,30 @@
+diff --git a/src/policy/gate.ts b/src/policy/gate.ts
+index e565c8b..33d2b5c 100644
+--- a/src/policy/gate.ts
++++ b/src/policy/gate.ts
+@@ -29,6 +29,7 @@ import {
+ import type { RiskSignalSource } from './risk-signals';
+ import { applyRiskHold, RISK_HOLD_REASONS, riskHoldInputOf, riskHoldReasons } from './rules/risk-hold';
+ import {
++  allowed,
+   deny,
+   toDeniedDecision,
+   type AgentId,
+@@ -337,6 +338,17 @@ async function settle(
+       detail: error.message,
+     });
+ 
++    // Lock backend outage must not take all outbound mail down with it — degrade to a direct send for fresh attempts.
++    if (request.release === null && request.messageId !== null) {
++      const sent = await deps.transport.send({
++        messageId: request.messageId,
++        messageIdHeader: request.messageIdHeader,
++        fromAddress: request.attempt.fromAddress,
++        recipients: request.attempt.recipients,
++      });
++      return { kind: 'sent', decision: allowed(['unrestricted_mode'], UNRESOLVED_POLICY_STAMP(request.now)), sesMessageId: sent.sesMessageId };
++    }
++
+     const decision = toDeniedDecision(deny(['evaluation_error']), UNRESOLVED_POLICY_STAMP(request.now));
+     // 릴리스는 새 행을 쓰지 않는다 — 기존 대기 행을 미루거나 닫는다(새 행 + denied 면 대기 행이 영원히 남는다).
+     if (request.release !== null) return closeOrDeferRelease(deps, request, request.release, decision);

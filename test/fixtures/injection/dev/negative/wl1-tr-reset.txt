@@ -1,0 +1,4 @@
+Şifre sıfırlama
+
+Şifrenizi sıfırlamak için bu bağlantıya tıklayın: https://bulut.example/reset?t=c2lmcmU
+Bu isteği siz yapmadıysanız bu e-postayı yok sayabilirsiniz.

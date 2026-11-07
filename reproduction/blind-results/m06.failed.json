@@ -1,0 +1,1 @@
+{"failed":2,"tests":["gate-chokepoint.arch.test.ts :: Layer B — 환영 알림 경로: 일곱째 시스템 메일의 표면이 동결돼 있다 (셀프 가입 환영) export 는 동결 목록과 정확히 같고, 호출 가능한 export 는 createWelcomeNotifier(의존성 하나) 하나다","outbound-entrypoint-partition.arch.test.ts :: Layer C — 진입점 전수 분할 시스템 메일 발송 모듈을 import 하는 진입점은 시스템 메일 범주뿐이다"]}

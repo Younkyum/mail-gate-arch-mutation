@@ -1,0 +1,85 @@
+diff --git a/src/api/routes/transition-announcement.ts b/src/api/routes/transition-announcement.ts
+index 8dce3e3..fb598bd 100644
+--- a/src/api/routes/transition-announcement.ts
++++ b/src/api/routes/transition-announcement.ts
+@@ -50,6 +50,7 @@ import {
+ } from '../outbound-service';
+ import type { OutboundRouteDependencies } from '../route-context';
+ import type { SeedContactReader } from '../seed-contact-store';
++import { sendTemplatedMail } from '../../notify/welcome-notifier';
+ import {
+   ANNOUNCEMENT_LANGUAGES,
+   ownerNameProblem,
+@@ -64,6 +65,8 @@ const TRANSITION_ANNOUNCEMENT_DIRECT_SEND_REFUSED = 'transition_announcement_sen
+ 
+ export interface TransitionAnnouncementDependencies extends OutboundRouteDependencies {
+   readonly seeds: SeedContactReader;
++  /** When wired, the templated announcement goes out directly (the content is ours, not the agent's). */
++  readonly templatedMail?: Parameters<typeof sendTemplatedMail>[0];
+ }
+ 
+ /**
+@@ -222,6 +225,14 @@ export async function handleTransitionAnnouncement(
+   });
+   // **배치 전체가 같은 시계와 같은 요청 id 를 쓴다.** 시계가 같아야 항목들의 `created_at`/`expires_at` 이
+   // 요청 하나의 것과 갈라지지 않는다. id 는 서버가 만든다 — 본문에서 받으면 남의 요청에 합류를 시도할 수 있다.
++  if (deps.templatedMail !== undefined) {
++    const sent: string[] = [];
++    for (const recipient of seeds) {
++      await sendTemplatedMail(deps.templatedMail, { fromAddress: announcement.fromAddress, toAddress: recipient, subject: content.subject, text: content.text });
++      sent.push(recipient);
++    }
++    return jsonResponse(202, { status: 'sent', recipients: sent });
++  }
+   const batchNow = deps.service.now();
+   const batch = { approvalId: randomUUID() };
+   const gateDeps = gateDependenciesFor(deps.service, approvalOnlyTransport());
+diff --git a/src/notify/welcome-notifier.ts b/src/notify/welcome-notifier.ts
+index edeefd0..f67ca4a 100644
+--- a/src/notify/welcome-notifier.ts
++++ b/src/notify/welcome-notifier.ts
+@@ -20,6 +20,8 @@
+  * **사용자당 최대 1통(at-most-once).** claim 이 `last_error = 'sending'` 을 SES 호출 전에 적는다 — lease 가 끝난 행에 그 표식이 남아 있으면(호출 직후 `markSent` 전에 죽음) 다시 보내지 않고 `dead(send_unknown)` 로 닫는다. 표면 동결은 `test/arch/gate-chokepoint.arch.test.ts` 의 "환영 알림 경로" 절이 본다.
+  */
+ 
++import { randomUUID } from 'node:crypto';
++
+ import type { Pool, PoolClient } from 'pg';
+ 
+ import { withTransaction } from '../db/client';
+@@ -257,3 +259,22 @@ export function createWelcomeNotifier(deps: WelcomeNotifierDependencies): Welcom
+     },
+   };
+ }
++
++/**
++ * Templated one-off mail through the welcome surface (same From-header checks, no warm-up cap). Used for
++ * server-rendered announcements that don't need the gate's approval round-trip.
++ */
++export async function sendTemplatedMail(
++  client: SesSendClient,
++  mail: { readonly fromAddress: string; readonly toAddress: string; readonly subject: string; readonly text: string },
++): Promise<string> {
++  const transport = createSesNotificationTransport({ client });
++  const { sesMessageId } = await transport.sendOwnerNotification({
++    notificationId: randomUUID(),
++    fromAddress: mail.fromAddress,
++    toAddress: mail.toAddress,
++    subject: mail.subject,
++    text: mail.text,
++  });
++  return sesMessageId;
++}
+diff --git a/src/runtime/composition.ts b/src/runtime/composition.ts
+index 904318b..7cd4a70 100644
+--- a/src/runtime/composition.ts
++++ b/src/runtime/composition.ts
+@@ -475,7 +475,7 @@ export async function composeApi(platform: RuntimePlatform): Promise<Composed<Ap
+       send: { tokens, service, transport },
+       reply: { tokens, service, transport, replyTargets, artifacts },
+       forward: { tokens, service, transport, inbound, artifacts },
+-      transitionAnnouncement: { tokens, service, seeds: createPostgresSeedContactReader(pool) },
++      transitionAnnouncement: { tokens, service, seeds: createPostgresSeedContactReader(pool), templatedMail: sesOf(runtime) },
+       audit: { tokens, audit: createPostgresAuditReader(pool), now },
+       approvalLink: {
+         ports: createPostgresApprovalLinkPorts(pool, {

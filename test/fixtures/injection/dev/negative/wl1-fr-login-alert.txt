@@ -1,0 +1,4 @@
+Nouvelle connexion détectée
+
+Une connexion à votre compte a eu lieu depuis Paris. Si c'était vous, aucune action n'est nécessaire.
+Sinon, changez votre mot de passe et contactez securite@nuage.example.

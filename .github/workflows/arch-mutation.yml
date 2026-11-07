@@ -1,0 +1,179 @@
+# arch-mutation — AC-8 Layer F (계획 §5.0 "Layer F — 비공허성 검증")
+#
+# arch 스위트가 green 이라는 사실은 두 가지를 뜻할 수 있다: ① 위반이 없다,
+# ② **층이 아무것도 검사하지 않는다.** 둘을 구분하지 못하면 6층 전체가 장식이 된다.
+#
+# 이 워크플로는 알려진 위반 6종을 하나씩 워킹트리에 넣고 arch 스위트를 돌린다.
+# **실패해야 정상**이고, 통과하면 그 층이 잠들어 있다는 뜻이므로 job 이 실패한다.
+# 러너가 매 변이마다 원본을 복구하고, 마지막에 기준선이 다시 green 인지까지 확인한다.
+#
+# CI(ci.yml)와 분리한 이유: 스위트를 8회 돌리므로(기준선 + 변이 6 + 복구 확인) 느리고,
+# 실패의 의미가 정반대다 — 같은 job 에 두면 로그에서 "빨간불이 정상인 실행"과
+# "빨간불이 사고인 실행"이 섞인다.
+
+# 트리거(2026-10-01): GitHub 호스팅 워커 하나로 한 번에 약 32분이라 매 push 마다 돌리지 않는다(배포를 막지도 않는다).
+#   push·PR 은 아래 경로가 바뀔 때만 · 매주 한 번(일요일 KST 03:00 = 토요일 UTC 18:00) 전체 · 손으로(workflow_dispatch). 빠른 arch 스위트는 ci.yml 이 매 push 돌린다.
+#   src/** 전체는 넣지 않았다 — 경로 밖 src 변경이 층을 잠재우면 주간 실행이 잡는다.
+#   주간인 이유(2026-10-01, 자체 실행기로 옮기며): Mac 이 잠들어 있으면 예약 실행은 대기열에서 기다리고, GitHub 는 24시간 동안 실행기를 못 받은
+#   job 을 취소한다 — 매일이면 잠든 날마다 취소가 쌓인다(docs/runbooks/ci-cd.md §11-6).
+
+name: Arch mutation (Layer F)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - test/arch/**
+      - .dependency-cruiser.cjs
+      - infra/**
+      - cdk.json
+      - src/runtime/handlers/migrate.ts
+      - src/runtime/role-bootstrap.ts
+      - src/db/migrations/**
+      - package.json
+      - pnpm-lock.yaml
+      - vitest.config.ts
+      - tsconfig.json
+      - .github/workflows/arch-mutation.yml
+      # 변이 카탈로그(test/arch/mutations/catalogue.ts)가 고치는 기존 경계 파일 — 카탈로그에 파일을 더하면 여기도 더한다.
+      - src/api/outbound-http.ts
+      - src/api/routes/forward.ts
+      - src/approval/service.ts
+      - src/billing/paddle/signature.ts
+      - src/db/repositories/approval-link-use-store.ts
+      - src/db/repositories/inbound-read-store.ts
+      - src/db/repositories/inbound-store.ts
+      - src/db/repositories/policy-source.ts
+      - src/mail/transport/ses-transport.ts
+      - src/mcp/tools.ts
+      - src/notify/approval-notifier.ts
+      - src/passport/attestations.ts
+      - src/passport/custody-local.ts
+      - src/passport/public-directory.ts
+      - src/passport/publisher.ts
+      - src/policy/gate.ts
+      - src/policy/inbound-policy.ts
+      - src/policy/manifest.ts
+      - src/policy/policy-loader.ts
+      - src/policy/rules/identity.ts
+      - src/policy/rules/outbound-mode.ts
+      - src/runtime/admin-composition.ts
+      - src/runtime/handlers/billing-webhook.ts
+      - src/runtime/handlers/login-mailer.ts
+      - src/runtime/router.ts
+      - src/tlog/epoch.ts
+      - src/tlog/leaf.ts
+      - src/tlog/merkle.ts
+      - scripts/tlog-verify/**
+  pull_request:
+    paths:
+      - test/arch/**
+      - .dependency-cruiser.cjs
+      - infra/**
+      - cdk.json
+      - src/runtime/handlers/migrate.ts
+      - src/runtime/role-bootstrap.ts
+      - src/db/migrations/**
+      - package.json
+      - pnpm-lock.yaml
+      - vitest.config.ts
+      - tsconfig.json
+      - .github/workflows/arch-mutation.yml
+      # 변이 카탈로그(test/arch/mutations/catalogue.ts)가 고치는 기존 경계 파일 — 카탈로그에 파일을 더하면 여기도 더한다.
+      - src/api/outbound-http.ts
+      - src/api/routes/forward.ts
+      - src/approval/service.ts
+      - src/billing/paddle/signature.ts
+      - src/db/repositories/approval-link-use-store.ts
+      - src/db/repositories/inbound-read-store.ts
+      - src/db/repositories/inbound-store.ts
+      - src/db/repositories/policy-source.ts
+      - src/mail/transport/ses-transport.ts
+      - src/mcp/tools.ts
+      - src/notify/approval-notifier.ts
+      - src/passport/attestations.ts
+      - src/passport/custody-local.ts
+      - src/passport/public-directory.ts
+      - src/passport/publisher.ts
+      - src/policy/gate.ts
+      - src/policy/inbound-policy.ts
+      - src/policy/manifest.ts
+      - src/policy/policy-loader.ts
+      - src/policy/rules/identity.ts
+      - src/policy/rules/outbound-mode.ts
+      - src/runtime/admin-composition.ts
+      - src/runtime/handlers/billing-webhook.ts
+      - src/runtime/handlers/login-mailer.ts
+      - src/runtime/router.ts
+      - src/tlog/epoch.ts
+      - src/tlog/leaf.ts
+      - src/tlog/merkle.ts
+      - scripts/tlog-verify/**
+  schedule:
+    - cron: '0 18 * * 6'
+  workflow_dispatch:
+    inputs:
+      github_hosted:
+        description: 'GitHub 호스팅(ubuntu-latest)에서 돌린다 — Mac 이 꺼져 있을 때만(유료 분)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: arch-mutation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mutation:
+    # Dependabot PR 은 거르지 않는다면 package.json·락파일 경로로 매번 돈다 — 머지된 뒤 main push 와 주간 실행이 잡는다(2026-10-01).
+    if: github.actor != 'dependabot[bot]'
+    # 자체 실행기(docs/runbooks/ci-cd.md §11)가 기본. workflow_dispatch 의 github_hosted 만 ubuntu-latest.
+    runs-on: ${{ fromJSON(inputs.github_hosted && '"ubuntu-latest"' || '["self-hosted","linux","arm64","atmark"]') }}
+    # GitHub 호스팅 워커 하나로 변이 61종 = 약 32분(2026-10-01, 36821309056).
+    timeout-minutes: 60
+    # 2 vCPU 러너에서 기본 워커 4 로 돌린 기준선 arch 스위트가 시간 상한으로 무너졌다(36820384901) — ci.yml 과 같은 이유로 그 러너에서는 워커 하나.
+    # 자체 실행기는 2 — 같은 VM 에서 CI(워커 4)와 겹쳐 돌 수 있어(슬롯 2) 시간 상한에 여유를 둔다.
+    # 러너가 변이마다 주는 `--maxWorkers=2` 는 프로젝트 설정(이 값)이 먼저다(vitest.config.ts 머리말).
+    env:
+      ATMARK_TEST_WORKERS: ${{ inputs.github_hosted && '1' || '2' }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 10.10.0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # ci.yml 과 같은 이유로 락파일을 고정한다. 이 워크플로는 **의존성 트리가 기준선의
+      # 일부**라 더 중요하다 — ts-morph 버전이 달라지면 변이 판정 자체가 흔들린다.
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # 운영 synth 는 `dist/lambda/<name>/index.js` 를 요구한다(없으면 의도적으로 실패 — ci.yml 과 같다). 첫 실행(2026-10-01)이 여기서 멈췄다.
+      - name: Lambda 번들
+        run: pnpm build:lambda
+
+      # Layer E 변이는 synth 산출물에 위반 템플릿을 끼워 넣는다. 기준선 산출물이 먼저 있어야 한다.
+      - name: CDK synth (Layer E 입력)
+        run: pnpm exec cdk synth --quiet
+
+      # 변이 6종 = Layer A / B(정방향) / C / D / E / B(역방향) 의 단언을 하나씩 겨냥한다.
+      # 러너는 "스위트가 실패했다"가 아니라 "**겨냥한 테스트가** 실패했다"로 판정한다 —
+      # vitest JSON 리포트의 그 테스트 `status` 만 본다. stdout 문자열 매칭이었을 때는
+      # 통과한 느린 테스트의 이름이 로그에 찍히는 것만으로 조건이 충족돼 거짓 양성이 났다.
+      - name: Mutation suite
+        run: pnpm exec tsx test/arch/mutations/run-mutations.ts
+
+      # 러너가 워킹트리를 원상 복구했는지 CI 가 한 번 더 확인한다.
+      # 잔해가 남은 채 green 이 나오면 다음 실행의 기준선이 오염된다.
+      - name: 워킹트리 복구 확인
+        run: git diff --exit-code

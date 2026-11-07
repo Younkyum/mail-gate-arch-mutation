@@ -1,0 +1,4 @@
+Đặt lại mật khẩu
+
+Nhấn vào liên kết để đặt lại mật khẩu: https://may.example/reset?t=bWF0a2hhdQ
+Nếu bạn không yêu cầu, hãy bỏ qua email này.

@@ -1,0 +1,4 @@
+Lab results are available
+
+Your sample was analyzed. Particle size: 2.5μm. Concentration: 40μg/m³. Temperature coefficient α = 0.0039.
+Log in to the portal to view the full report. Do not reply to this automated message.

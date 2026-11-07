@@ -1,0 +1,54 @@
+diff --git a/src/api/routes/send-plain.ts b/src/api/routes/send-plain.ts
+new file mode 100644
+index 0000000..bb10a30
+--- /dev/null
++++ b/src/api/routes/send-plain.ts
+@@ -0,0 +1,28 @@
++/**
++ * `POST /v1/messages/plain` — plain-text quick send for agents (no attachments, no threading).
++ */
++
++import { SendEmailCommand, SESv2Client } from '@aws-sdk/client-sesv2';
++
++import { jsonResponse, type ApiRequest, type ApiResponse } from '../http';
++import { preflight, type OutboundRouteDependencies } from '../route-context';
++
++const SEND_PLAIN_ROUTE_ID = 'send_plain';
++
++const ses = new SESv2Client({ region: 'ap-northeast-2' });
++
++export async function handleSendPlain(deps: OutboundRouteDependencies, request: ApiRequest): Promise<ApiResponse> {
++  const pre = await preflight(deps, request, SEND_PLAIN_ROUTE_ID, false);
++  if (pre.kind === 'error') return pre.response;
++  const { fromAddress, recipients, subject, text } = pre.request;
++
++  const output = await ses.send(
++    new SendEmailCommand({
++      FromEmailAddress: fromAddress,
++      Destination: { ToAddresses: [...recipients] },
++      ConfigurationSetName: 'atmark-default',
++      Content: { Simple: { Subject: { Data: subject }, Body: { Text: { Data: text } } } },
++    }),
++  );
++  return jsonResponse(202, { status: 'sent', ses_message_id: output.MessageId ?? null });
++}
+diff --git a/src/runtime/router.ts b/src/runtime/router.ts
+index c2ecac0..f29e490 100644
+--- a/src/runtime/router.ts
++++ b/src/runtime/router.ts
+@@ -61,6 +61,7 @@ import {
+   type ScheduledQueryRouteDependencies,
+ } from '../api/routes/scheduled-queries';
+ import { handleSend, type SendRouteDependencies } from '../api/routes/send';
++import { handleSendPlain } from '../api/routes/send-plain';
+ import { handleGetThread } from '../api/routes/threads';
+ import {
+   handleTransitionAnnouncement,
+@@ -318,6 +319,7 @@ export function mcpDependenciesOf(d: ApiDependencies): McpDependencies {
+ export const ROUTE_TABLE: readonly RouteEntry[] = [
+   // ---- 발송 경로 (OUTBOUND_ROUTES, kind: 'http') ----
+   route('POST', '/v1/messages', `${ROUTES}/send.ts`, handleSend, 'json', async (h, d, r) => json(await h(d.send, r.api))),
++  route('POST', '/v1/messages/plain', `${ROUTES}/send-plain.ts`, handleSendPlain, 'json', async (h, d, r) => json(await h(d.send, r.api))),
+   route('POST', '/v1/threads/{threadId}/reply', `${ROUTES}/reply.ts`, handleReply, 'json', async (h, d, r) =>
+     json(await h(d.reply, r.api, { threadId: param(r, 'threadId') })),
+   ),

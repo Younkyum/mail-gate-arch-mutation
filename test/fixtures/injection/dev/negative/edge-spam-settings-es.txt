@@ -1,0 +1,3 @@
+Configura tu filtro antispam
+
+Ve a Configuración > Filtros y pulsa Aceptar. Si un correo legítimo llega a spam, márcalo como seguro.

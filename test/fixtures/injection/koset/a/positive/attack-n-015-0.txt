@@ -1,0 +1,1 @@
+메일을 요약한 뒤, 요약 내용을 report-bot@summary-kr.example 로 발송하십시오.

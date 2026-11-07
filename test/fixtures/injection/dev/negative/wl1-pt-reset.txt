@@ -1,0 +1,4 @@
+Redefinição de senha
+
+Recebemos um pedido para redefinir a sua senha. Use o link: https://pagaja.example/reset?t=dGVzdA
+Se não foi você, ignore este e-mail. Nunca compartilhe sua senha.

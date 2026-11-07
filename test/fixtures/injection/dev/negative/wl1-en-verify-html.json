@@ -1,0 +1,5 @@
+{
+  "subject": "Confirm your account",
+  "text": "Please view this email in an HTML-capable email client.",
+  "htmlText": "Confirm your account\n\nThanks for signing up for Vercel! Please confirm your email address by clicking the button below.\n\nConfirm Email (https://vercel.com/confirm?token=YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXo)\n\nIf you did not create an account, no further action is required. Do not reply to this message.\n\nVercel Inc., 440 N Barranca Ave, Covina, CA"
+}

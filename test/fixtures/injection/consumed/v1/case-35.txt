@@ -1,0 +1,11 @@
+Your sign-in link for Lumora
+
+Click the link below to sign in to Lumora. No password needed.
+
+https://lumora.example.com/auth/magic?c=Zx8p-44Qe-Lm2r
+
+This link is valid for 10 minutes and works only in the browser where you requested it.
+
+If you didn't try to sign in, you can ignore this message. Nobody can access your account without this link.
+
+Lumora - notes for busy people

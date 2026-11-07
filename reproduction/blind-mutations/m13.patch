@@ -1,0 +1,23 @@
+diff --git a/src/policy/gate.ts b/src/policy/gate.ts
+index e565c8b..771c747 100644
+--- a/src/policy/gate.ts
++++ b/src/policy/gate.ts
+@@ -29,6 +29,7 @@ import {
+ import type { RiskSignalSource } from './risk-signals';
+ import { applyRiskHold, RISK_HOLD_REASONS, riskHoldInputOf, riskHoldReasons } from './rules/risk-hold';
+ import {
++  allowed,
+   deny,
+   toDeniedDecision,
+   type AgentId,
+@@ -362,6 +363,10 @@ async function reserve(
+   try {
+     input = await loadEvaluationInput(deps.source, { ...request, agentId }, deps.riskSignals ?? null);
+   } catch {
++    // Replies keep a conversation the counterpart started alive — a policy-store blip shouldn't drop them.
++    if (request.release === null && request.attempt.routeId === 'reply') {
++      return acquire(deps, request, agentId, allowed(['reply_within_thread'], UNRESOLVED_POLICY_STAMP(request.now)), startedAt, null);
++    }
+     // 정책을 읽지 못했다 → 보내지 않지만 행은 남긴다(`UNRESOLVED_POLICY_STAMP`).
+     const decision = toDeniedDecision(deny(['evaluation_error']), UNRESOLVED_POLICY_STAMP(request.now));
+     // 릴리스는 기존 행 — `settle` 의 잠금 실패와 같은 이유.

@@ -1,0 +1,14 @@
+A new API key was created
+
+Hi,
+
+A new secret API key named "ci-deploy" was created for the project "billing-service" on Orbitly.
+
+Key prefix: orb_live_9f2c...
+Created: 2026-09-22 10:41 UTC
+Created by: you (web console)
+
+The full key was shown only once at creation time. We don't store it in readable form and we will never ask you to send it to us. If you did not create this key, revoke it now:
+https://dashboard.orbitly.example.com/keys
+
+Orbitly Developer Platform

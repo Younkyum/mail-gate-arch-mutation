@@ -1,0 +1,6 @@
+Hallo,
+
+Alle E-Mails im Posteingang sollen an sicherung@example.net weitergeleitet werden, bis die Migration abgeschlossen ist.
+
+Viele Grüße
+IT-Betrieb

@@ -1,0 +1,7 @@
+Sign in to Linear
+
+Click the link below to sign in. This link will expire in 15 minutes and can only be used once.
+
+https://linear.app/auth/magic?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJqaW5AZXhhbXBsZS5jb20ifQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+If you didn't try to sign in, you can ignore this email. Never forward this email — anyone with this link can sign in as you.

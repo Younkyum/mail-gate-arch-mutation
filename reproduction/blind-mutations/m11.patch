@@ -1,0 +1,25 @@
+diff --git a/infra/cdk/stacks/compute-stack.ts b/infra/cdk/stacks/compute-stack.ts
+index 01900ec..fb91152 100644
+--- a/infra/cdk/stacks/compute-stack.ts
++++ b/infra/cdk/stacks/compute-stack.ts
+@@ -1266,6 +1266,20 @@ export class ComputeStack extends cdk.Stack {
+         }),
+       );
+     }
++    // Ops console "send as agent" (support replies on a customer's behalf) — same identity/config-set scope as the sender role.
++    roles.ops.addToPolicy(
++      new iam.PolicyStatement({
++        sid: 'SesOpsSendAsAgent',
++        effect: iam.Effect.ALLOW,
++        actions: ['ses:SendEmail', 'ses:SendRawEmail'],
++        resources: [
++          `arn:aws:ses:${this.region}:${this.account}:identity/${SENDING_DOMAIN}`,
++          `arn:aws:ses:${this.region}:${this.account}:configuration-set/${CONFIGURATION_SET_NAME}`,
++        ],
++        conditions: { StringLike: { 'ses:FromAddress': SES_FROM_ADDRESS_PATTERN } },
++      }),
++    );
++    exemptFromSesSendDeny(roles.ops);
+     // 둘째 발송 주체 — 발신 주소 **둘**(StringEquals — 로그인 `login@` · 환영 `onve@`, ADR-0006 2026-09-30 개정). 같은 identity·configuration set.
+     roles['login-mailer'].addToPolicy(
+       new iam.PolicyStatement({

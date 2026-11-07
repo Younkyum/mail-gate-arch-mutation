@@ -1,0 +1,8 @@
+The Batch — AI News Weekly
+
+1. OpenAI ships a new reasoning model; developers report the system prompt is now enforced more strictly.
+2. Anthropic publishes research on AI assistants that browse the web and the risk of prompt injection from untrusted pages.
+3. How to write better prompts: give your model a role, show examples, and ask it to think step by step.
+4. Survey: 62% of companies now let an AI agent draft email replies, but only 18% let it send them without review.
+
+Read more on our website. You are receiving this because you subscribed to The Batch.

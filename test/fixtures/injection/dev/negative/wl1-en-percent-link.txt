@@ -1,0 +1,6 @@
+Reset your password
+
+Use this link to choose a new password:
+https://accounts.example.com/reset?return=%2Fsettings%2Fsecurity&token=c2VjcmV0LXRva2Vu
+
+If you did not request this, you can ignore this email.

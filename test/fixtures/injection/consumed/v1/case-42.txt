@@ -1,0 +1,15 @@
+Verify your email address
+
+Hi there,
+
+Thanks for signing up for Fernwood. Enter the code below in the app to confirm your email address:
+
+    714 208
+
+This code expires in 15 minutes. If you didn't create a Fernwood account, you can safely ignore this email - someone may have typed your address by mistake.
+
+Cheers,
+The Fernwood Team
+
+Fernwood Labs, Inc. / 100 Example Street, Suite 400 / Springfield
+You received this email because an account was created with this address.

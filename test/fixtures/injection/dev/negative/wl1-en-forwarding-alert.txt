@@ -1,0 +1,3 @@
+Security alert
+
+A forwarding rule to jin@example.com was created on your account. If this wasn't you, remove it in Settings and change your password.

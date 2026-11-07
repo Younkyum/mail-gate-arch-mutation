@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" role="img" aria-labelledby="fig-a-title fig-a-desc" font-family="inherit" fill="none" stroke="currentColor">
+  <title id="fig-a-title">Gmail OAuth compared with the agent's own address</title>
+  <desc id="fig-a-desc">Left: an agent connected to your Gmail over OAuth reads every message in the mailbox, sends as you to any address, receives text from anyone who has your address, and its sent mail sits in your Sent folder. Right: an agent with its own address, scout@atmark.ai, reads only mail sent to that address, sends as itself to the send allowlist, gets received mail as marked external data, and every decision goes to a hash-chained log. Your own mailbox is not connected.</desc>
+
+  <!-- Left panel -->
+  <text x="184" y="30" fill="currentColor" stroke="none" font-size="16" font-weight="600" text-anchor="middle">Your Gmail, over OAuth</text>
+  <rect x="124" y="48" width="120" height="36" rx="6" stroke-width="1.5"/>
+  <text x="184" y="71" fill="currentColor" stroke="none" font-size="14" text-anchor="middle">Agent</text>
+  <line x1="184" y1="84" x2="184" y2="112" stroke-width="1.5"/>
+  <path d="M178 106 L184 114 L190 106" stroke-width="1.5"/>
+  <rect x="16" y="116" width="336" height="216" rx="8" stroke-width="1.5"/>
+  <text x="184" y="142" fill="currentColor" stroke="none" font-size="14" font-weight="600" text-anchor="middle">you@gmail.com</text>
+  <line x1="32" y1="156" x2="336" y2="156" stroke-width="1" opacity=".4"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="32" y="184"><tspan font-weight="600">Reads</tspan>  every message in the mailbox</text>
+    <text x="32" y="220"><tspan font-weight="600">Sends</tspan>  as you, to any address</text>
+    <text x="32" y="256"><tspan font-weight="600">Inbound</tspan>  anyone who has your address</text>
+    <text x="32" y="292"><tspan font-weight="600">Record</tspan>  your Sent folder, mixed with yours</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="360" y1="20" x2="360" y2="380" stroke-width="1" stroke-dasharray="4 6" opacity=".4"/>
+
+  <!-- Right panel -->
+  <text x="536" y="30" fill="currentColor" stroke="none" font-size="16" font-weight="600" text-anchor="middle">Its own address</text>
+  <rect x="476" y="48" width="120" height="36" rx="6" stroke-width="1.5"/>
+  <text x="536" y="71" fill="currentColor" stroke="none" font-size="14" text-anchor="middle">Agent</text>
+  <line x1="536" y1="84" x2="536" y2="112" stroke-width="1.5"/>
+  <path d="M530 106 L536 114 L542 106" stroke-width="1.5"/>
+  <rect x="368" y="116" width="336" height="216" rx="8" stroke-width="1.5"/>
+  <text x="536" y="142" fill="currentColor" stroke="none" font-size="14" font-weight="600" text-anchor="middle">scout@atmark.ai</text>
+  <line x1="384" y1="156" x2="688" y2="156" stroke-width="1" opacity=".4"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="384" y="184"><tspan font-weight="600">Reads</tspan>  mail sent to scout@</text>
+    <text x="384" y="220"><tspan font-weight="600">Sends</tspan>  as scout@, to the send allowlist</text>
+    <text x="384" y="256"><tspan font-weight="600">Inbound</tspan>  arrives as marked external data</text>
+    <text x="384" y="292"><tspan font-weight="600">Record</tspan>  every decision, hash-chained</text>
+  </g>
+  <rect x="440" y="350" width="192" height="34" rx="6" stroke-width="1.5" stroke-dasharray="4 4" opacity=".6"/>
+  <text x="536" y="372" fill="currentColor" stroke="none" font-size="13" text-anchor="middle" opacity=".8">your own inbox: not connected</text>
+</svg>

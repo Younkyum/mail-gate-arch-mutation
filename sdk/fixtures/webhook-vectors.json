@@ -1,0 +1,233 @@
+{
+  "generated_by": "sdk/typescript/test/webhooks.test.ts from src/webhooks/signing.ts",
+  "vectors": [
+    {
+      "name": "valid",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "valid"
+    },
+    {
+      "name": "valid at +300s edge",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450300,
+      "expected": "valid"
+    },
+    {
+      "name": "valid at -300s edge (clock behind)",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791449700,
+      "expected": "valid"
+    },
+    {
+      "name": "too old (+301s)",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450301,
+      "expected": "timestamp_out_of_tolerance"
+    },
+    {
+      "name": "too far in the future (-301s)",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791449699,
+      "expected": "timestamp_out_of_tolerance"
+    },
+    {
+      "name": "rotation: new + old signatures, receiver has new",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY= v1,9XTnMdpmjoq2eZWSwU9Dzke/84KDEMGxwq1/1uGvGic="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "valid"
+    },
+    {
+      "name": "rotation: new + old signatures, receiver still has old",
+      "secret": "whsec_AgkQFx4lLDM6QUhPVl1ka3J5gIeOlZyjqrG4v8bN1Ns=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY= v1,9XTnMdpmjoq2eZWSwU9Dzke/84KDEMGxwq1/1uGvGic="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "valid"
+    },
+    {
+      "name": "wrong secret",
+      "secret": "whsec_AwoRGB8mLTQ7QklQV15lbHN6gYiPlp2kq7K5wMfO1dw=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "no_matching_signature"
+    },
+    {
+      "name": "tampered body",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.sent\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "no_matching_signature"
+    },
+    {
+      "name": "tampered id",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "no_matching_signature"
+    },
+    {
+      "name": "tampered timestamp",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450001",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "no_matching_signature"
+    },
+    {
+      "name": "malformed timestamp",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "17e8",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "malformed"
+    },
+    {
+      "name": "negative timestamp",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "-1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "malformed"
+    },
+    {
+      "name": "unknown version is skipped, v1 matches",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v2,AAAA v1,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "valid"
+    },
+    {
+      "name": "only unknown versions",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v2,wUy8no0oAk/5lmffUjGInzoF1+bpuTFMdeCFIZ4LNJY="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "no_matching_signature"
+    },
+    {
+      "name": "truncated signature",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,wUy8no0oAk/5lmffU"
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "no_matching_signature"
+    },
+    {
+      "name": "empty signature header",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": ""
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.received\",\"api_version\":\"2026-09-23\",\"created_at\":\"2026-10-08T09:00:00.000Z\",\"agent_id\":\"7c21aa00bb11cc22dd33ee44ff55f5a1\",\"data\":{\"message_id\":\"11111111-2222-4333-8444-555555555555\",\"thread_id\":\"66666666-7777-4888-9999-aaaaaaaaaaaa\",\"received_at\":\"2026-10-08T08:59:59.000Z\"}}",
+      "now_unix": 1791450000,
+      "expected": "no_matching_signature"
+    },
+    {
+      "name": "unicode body",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,eq3SBujIXPl+N3btb3N/nSdkysNa6/lAalZ4P3NzhU8="
+      },
+      "body": "{\"id\":\"0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f\",\"type\":\"message.sent\",\"data\":{\"note\":\"안녕하세요 — émoji 🙂  \"}}",
+      "now_unix": 1791450000,
+      "expected": "valid"
+    },
+    {
+      "name": "empty body",
+      "secret": "whsec_AQgPFh0kKzI5QEdOVVxjanF4f4aNlJuiqbC3vsXM09o=",
+      "headers": {
+        "webhook-id": "0b9f3c7e-5d2a-4c1b-9e8f-7a6b5c4d3e2f",
+        "webhook-timestamp": "1791450000",
+        "webhook-signature": "v1,5a5qY74YHtKCGCNwKcOaXzYN1VJDEYvL1YN2YvxEIZ0="
+      },
+      "body": "",
+      "now_unix": 1791450000,
+      "expected": "valid"
+    }
+  ]
+}

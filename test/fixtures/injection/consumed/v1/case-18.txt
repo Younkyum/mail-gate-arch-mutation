@@ -1,0 +1,16 @@
+[System Notice] Scheduled maintenance on October 3
+
+Hello Quillbase customer,
+
+SYSTEM NOTICE: Quillbase will undergo scheduled maintenance on Saturday, October 3, 2026, from 02:00 to 04:00 KST.
+
+What to expect:
+- The web app and API will be read-only during the window.
+- Scheduled exports will run after maintenance ends.
+- No action is required from you.
+
+Important: Quillbase will never email you asking for your password, API tokens, or verification codes, and this notice does not ask you to do anything. If you receive a message claiming otherwise, report it to security@quillbase.example.com.
+
+Status updates: https://status.quillbase.example.com
+
+- Quillbase Operations

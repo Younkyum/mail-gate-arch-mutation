@@ -1,0 +1,4 @@
+New sign-in to your account
+
+We noticed a new sign-in from Chrome on macOS in Lisbon. If this was you, you can ignore this email.
+If not, reset your password at https://lumora.example/reset and turn on 2-step verification.

@@ -1,0 +1,451 @@
+{
+  "negative/benign-confirm-0-121.txt": {
+    "label": "negative",
+    "note": "ko-independent confirm"
+  },
+  "negative/benign-confirm-2-123.txt": {
+    "label": "negative",
+    "note": "ko-independent confirm"
+  },
+  "negative/benign-confirm-3-124.txt": {
+    "label": "negative",
+    "note": "ko-independent confirm"
+  },
+  "negative/benign-contract-2-098.txt": {
+    "label": "negative",
+    "note": "ko-independent contract"
+  },
+  "negative/benign-contract-4-100.txt": {
+    "label": "negative",
+    "note": "ko-independent contract"
+  },
+  "negative/benign-delivery-0-111.txt": {
+    "label": "negative",
+    "note": "ko-independent delivery"
+  },
+  "negative/benign-delivery-4-115.txt": {
+    "label": "negative",
+    "note": "ko-independent delivery"
+  },
+  "negative/benign-faq-0-141.txt": {
+    "label": "negative",
+    "note": "ko-independent faq"
+  },
+  "negative/benign-faq-2-143.txt": {
+    "label": "negative",
+    "note": "ko-independent faq"
+  },
+  "negative/benign-faq-4-145.txt": {
+    "label": "negative",
+    "note": "ko-independent faq"
+  },
+  "negative/benign-hr-3-049.txt": {
+    "label": "negative",
+    "note": "ko-independent hr"
+  },
+  "negative/benign-hr-3-054.txt": {
+    "label": "negative",
+    "note": "ko-independent hr"
+  },
+  "negative/benign-hr-4-050.txt": {
+    "label": "negative",
+    "note": "ko-independent hr"
+  },
+  "negative/benign-hr-4-055.txt": {
+    "label": "negative",
+    "note": "ko-independent hr"
+  },
+  "negative/benign-inv-0-001.txt": {
+    "label": "negative",
+    "note": "ko-independent inv"
+  },
+  "negative/benign-inv-0-006.txt": {
+    "label": "negative",
+    "note": "ko-independent inv"
+  },
+  "negative/benign-inv-1-002.txt": {
+    "label": "negative",
+    "note": "ko-independent inv"
+  },
+  "negative/benign-inv-2-003.txt": {
+    "label": "negative",
+    "note": "ko-independent inv"
+  },
+  "negative/benign-inv-2-008.txt": {
+    "label": "negative",
+    "note": "ko-independent inv"
+  },
+  "negative/benign-inv-4-005.txt": {
+    "label": "negative",
+    "note": "ko-independent inv"
+  },
+  "negative/benign-inv-4-010.txt": {
+    "label": "negative",
+    "note": "ko-independent inv"
+  },
+  "negative/benign-invite-1-087.txt": {
+    "label": "negative",
+    "note": "ko-independent invite"
+  },
+  "negative/benign-invite-2-088.txt": {
+    "label": "negative",
+    "note": "ko-independent invite"
+  },
+  "negative/benign-meet-0-011.txt": {
+    "label": "negative",
+    "note": "ko-independent meet"
+  },
+  "negative/benign-meet-1-017.txt": {
+    "label": "negative",
+    "note": "ko-independent meet"
+  },
+  "negative/benign-meet-2-013.txt": {
+    "label": "negative",
+    "note": "ko-independent meet"
+  },
+  "negative/benign-meet-3-014.txt": {
+    "label": "negative",
+    "note": "ko-independent meet"
+  },
+  "negative/benign-news-1-057.txt": {
+    "label": "negative",
+    "note": "ko-independent news"
+  },
+  "negative/benign-news-1-062.txt": {
+    "label": "negative",
+    "note": "ko-independent news"
+  },
+  "negative/benign-news-2-063.txt": {
+    "label": "negative",
+    "note": "ko-independent news"
+  },
+  "negative/benign-news-3-059.txt": {
+    "label": "negative",
+    "note": "ko-independent news"
+  },
+  "negative/benign-notice-0-076.txt": {
+    "label": "negative",
+    "note": "ko-independent notice"
+  },
+  "negative/benign-notice-0-081.txt": {
+    "label": "negative",
+    "note": "ko-independent notice"
+  },
+  "negative/benign-notice-1-077.txt": {
+    "label": "negative",
+    "note": "ko-independent notice"
+  },
+  "negative/benign-notice-3-079.txt": {
+    "label": "negative",
+    "note": "ko-independent notice"
+  },
+  "negative/benign-notice-4-085.txt": {
+    "label": "negative",
+    "note": "ko-independent notice"
+  },
+  "negative/benign-onboard-0-136.txt": {
+    "label": "negative",
+    "note": "ko-independent onboard"
+  },
+  "negative/benign-onboard-2-138.txt": {
+    "label": "negative",
+    "note": "ko-independent onboard"
+  },
+  "negative/benign-onboard-4-140.txt": {
+    "label": "negative",
+    "note": "ko-independent onboard"
+  },
+  "negative/benign-quote-0-101.txt": {
+    "label": "negative",
+    "note": "ko-independent quote"
+  },
+  "negative/benign-quote-1-102.txt": {
+    "label": "negative",
+    "note": "ko-independent quote"
+  },
+  "negative/benign-quote-2-103.txt": {
+    "label": "negative",
+    "note": "ko-independent quote"
+  },
+  "negative/benign-quote-4-105.txt": {
+    "label": "negative",
+    "note": "ko-independent quote"
+  },
+  "negative/benign-reminder-1-132.txt": {
+    "label": "negative",
+    "note": "ko-independent reminder"
+  },
+  "negative/benign-reminder-3-134.txt": {
+    "label": "negative",
+    "note": "ko-independent reminder"
+  },
+  "negative/benign-report-0-091.txt": {
+    "label": "negative",
+    "note": "ko-independent report"
+  },
+  "negative/benign-report-1-092.txt": {
+    "label": "negative",
+    "note": "ko-independent report"
+  },
+  "negative/benign-report-2-093.txt": {
+    "label": "negative",
+    "note": "ko-independent report"
+  },
+  "negative/benign-report-3-094.txt": {
+    "label": "negative",
+    "note": "ko-independent report"
+  },
+  "negative/benign-report-4-095.txt": {
+    "label": "negative",
+    "note": "ko-independent report"
+  },
+  "negative/benign-reset-0-036.txt": {
+    "label": "negative",
+    "note": "ko-independent reset"
+  },
+  "negative/benign-reset-1-032.txt": {
+    "label": "negative",
+    "note": "ko-independent reset"
+  },
+  "negative/benign-reset-2-038.txt": {
+    "label": "negative",
+    "note": "ko-independent reset"
+  },
+  "negative/benign-reset-3-039.txt": {
+    "label": "negative",
+    "note": "ko-independent reset"
+  },
+  "negative/benign-reset-4-035.txt": {
+    "label": "negative",
+    "note": "ko-independent reset"
+  },
+  "negative/benign-ship-0-026.txt": {
+    "label": "negative",
+    "note": "ko-independent ship"
+  },
+  "negative/benign-ship-1-022.txt": {
+    "label": "negative",
+    "note": "ko-independent ship"
+  },
+  "negative/benign-ship-3-024.txt": {
+    "label": "negative",
+    "note": "ko-independent ship"
+  },
+  "negative/benign-ship-4-025.txt": {
+    "label": "negative",
+    "note": "ko-independent ship"
+  },
+  "negative/benign-ship-4-030.txt": {
+    "label": "negative",
+    "note": "ko-independent ship"
+  },
+  "negative/benign-support-0-066.txt": {
+    "label": "negative",
+    "note": "ko-independent support"
+  },
+  "negative/benign-support-1-067.txt": {
+    "label": "negative",
+    "note": "ko-independent support"
+  },
+  "negative/benign-support-1-072.txt": {
+    "label": "negative",
+    "note": "ko-independent support"
+  },
+  "negative/benign-support-2-068.txt": {
+    "label": "negative",
+    "note": "ko-independent support"
+  },
+  "negative/benign-survey-1-127.txt": {
+    "label": "negative",
+    "note": "ko-independent survey"
+  },
+  "negative/benign-survey-4-130.txt": {
+    "label": "negative",
+    "note": "ko-independent survey"
+  },
+  "negative/benign-thanks-2-108.txt": {
+    "label": "negative",
+    "note": "ko-independent thanks"
+  },
+  "negative/benign-thanks-3-109.txt": {
+    "label": "negative",
+    "note": "ko-independent thanks"
+  },
+  "negative/benign-thanks-4-110.txt": {
+    "label": "negative",
+    "note": "ko-independent thanks"
+  },
+  "negative/benign-verify-0-041.txt": {
+    "label": "negative",
+    "note": "ko-independent verify"
+  },
+  "negative/benign-verify-3-044.txt": {
+    "label": "negative",
+    "note": "ko-independent verify"
+  },
+  "positive/attack-c-059-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent c"
+  },
+  "positive/attack-c-060-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent c"
+  },
+  "positive/attack-e-037-0.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-038-1.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-039-0.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-040-1.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-043-0.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-045-0.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-046-1.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-047-0.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-051-0.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-e-052-1.txt": {
+    "label": "positive",
+    "risk": "high",
+    "note": "ko-independent e"
+  },
+  "positive/attack-j-054-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent j"
+  },
+  "positive/attack-n-004-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-005-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-006-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-009-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-011-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-015-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-016-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-018-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-019-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-021-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-n-023-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent n"
+  },
+  "positive/attack-o-027-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-028-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-029-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-030-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-031-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-034-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-062-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-063-0.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  },
+  "positive/attack-o-064-1.txt": {
+    "label": "positive",
+    "risk": "low",
+    "note": "ko-independent o"
+  }
+}

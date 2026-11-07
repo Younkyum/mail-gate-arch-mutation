@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AI 의심 메일 감시 워커 LaunchDaemon — setup.sh 가 __SVC_ID__ · __WORKER_ID__ 를 채워 /Library/LaunchDaemons/ai.atmark.aiwatch.plist 로 설치한다.
+     로그인 없이 부팅 때 뜬다. UserName 이 없는 이유: run.sh 가 root 로 시스템 키체인을 읽어야 한다 — 워커(main.ts)가 FD 3 을 읽자마자
+     _atmarkaiwatch(__SVC_ID__) 로 내려가고 되돌아올 수 없는지 확인한다. 런북: docs/runbooks/ai-watch.md §2 -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>ai.atmark.aiwatch</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Library/Application Support/AtmarkAiWatch/app/run.sh</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+  <!-- SIGTERM → 배수 하트비트 → 종료. long poll 은 즉시 끊으므로 20초면 넉넉하다. -->
+  <key>ExitTimeOut</key>
+  <integer>20</integer>
+  <!-- Background 는 지연이 튄다(설계 §5.2). CI VM 보다 한 단계 양보만. -->
+  <key>ProcessType</key>
+  <string>Standard</string>
+  <key>Nice</key>
+  <integer>5</integer>
+  <key>Umask</key>
+  <integer>63</integer>
+  <!-- 크래시 덤프 끔 — 메모리의 본문이 디스크에 남지 않게(설계 §1.4). -->
+  <key>SoftResourceLimits</key>
+  <dict>
+    <key>Core</key>
+    <integer>0</integer>
+    <key>NumberOfFiles</key>
+    <integer>256</integer>
+  </dict>
+  <key>HardResourceLimits</key>
+  <dict>
+    <key>Core</key>
+    <integer>0</integer>
+  </dict>
+  <!-- 환경은 최소(재검증 HIGH) — run.sh 가 어차피 `env -i` 로 비우고 이 넷만 다시 넘긴다(NODE_OPTIONS · DYLD_* · OPENSSL_* · SSL_* 는 닿지 않는다). -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>AIWATCH_RUN_AS_UID</key>
+    <string>__SVC_ID__</string>
+    <key>AIWATCH_RUN_AS_GID</key>
+    <string>__SVC_ID__</string>
+    <key>AIWATCH_WORKER_ID</key>
+    <string>__WORKER_ID__</string>
+    <key>AIWATCH_THREADS</key>
+    <string>4</string>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>/Library/Logs/atmark-ai-watch/worker.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Library/Logs/atmark-ai-watch/worker.log</string>
+</dict>
+</plist>

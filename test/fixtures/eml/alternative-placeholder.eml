@@ -1,0 +1,23 @@
+From: no-reply@portal.example.kr
+To: agent@atmark.ai
+Subject: =?UTF-8?B?7Y+s7YS4IOqwgOyehSDsnbjspp0=?=
+Message-ID: <alt.308455@portal.example.kr>
+Date: Tue, 22 Sep 2026 10:30:00 +0900
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="ALT-BOUNDARY"
+
+This is a multi-part message in MIME format.
+
+--ALT-BOUNDARY
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+
+7J20IOuplOydvOydgCBIVE1MIO2YleyLneyeheuLiOuLpC4gSFRNTCDsnYQg7KeA7JuQ7ZWY64qU
+IOuplOydvCDtlITroZzqt7jrnqjsl5DshJwg7ZmV7J247ZW0IOyjvOyEuOyalC4=
+--ALT-BOUNDARY
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: base64
+
+PGRpdj7qsIDsnoUg7J247KadIOy9lOuTnOuKlCA8Yj4zMDg0NTU8L2I+IOyeheuLiOuLpC48L2Rp
+dj4=
+--ALT-BOUNDARY--

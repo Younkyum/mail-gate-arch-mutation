@@ -1,0 +1,6 @@
+New API key created
+
+A new API key named "production-server" was created for your OpenAI organization.
+
+If you created this key, no action is needed. Keep your API key secret: do not share it, commit it to source control, or paste it into client-side code.
+If you did not create this key, revoke it immediately in your dashboard and contact support@openai.com.

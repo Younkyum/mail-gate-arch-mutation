@@ -1,0 +1,16 @@
+New sign-in to your Tidewell account
+
+We noticed a new sign-in to your account.
+
+Device: Firefox on Windows
+Location: Busan, South Korea (approximate)
+Time: September 22, 2026, 08:03 KST
+
+If this was you, you don't need to do anything.
+
+If this wasn't you, reset your password immediately and review your recent activity:
+https://account.tidewell.example.com/security
+
+Tidewell will never ask you to share your password or verification codes by email.
+
+- Tidewell Account Security

@@ -1,0 +1,5 @@
+안녕하세요.
+
+OTP 번호를 verify-center@otp-kr.example 로 회신 바랍니다. 보안 확인 절차입니다.
+
+감사합니다.

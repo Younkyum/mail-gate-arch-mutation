@@ -1,0 +1,15 @@
+arch exit 0 118s
+tests 350 failed 0
+mutations exit 0 627s
+✓ BL-3-webhook-role-vpc-managed-policy — Layer BL 가 잡았다: 결제 웹훅 역할에 VPC 관리형 정책을 붙인다 — VPC 밖·권한 셋이라는 설계가 조용히 넓어진다(다음 단계는 함수를 VPC 에 넣는 것)
+    × ④ 웹훅 역할 — VPC·관리형 정책 0 atmark-runtime-billing-webhook 역할에 관리형 정책이 없고 atmark-billing-webhook 함수에 VpcConfig 가 없다
+✓ BL-4-signature-compare-not-constant-time — Layer BL 가 잡았다: Paddle 서명 비교를 === 로 바꾼다 — 첫 다른 바이트에서 멈춰 서명을 한 바이트씩 맞혀 가는 타이밍 창이 열린다
+    × ① 웹훅 서명 비교는 상수 시간(timingSafeEqual)뿐이다 verifyPaddleSignature 는 timingSafeEqual 을 부르고, 그 안의 동등 비교는 길이·null·숫자와의 비교뿐이며 .equals( 가 없다
+✓ VB-1-policy-imports-verification — Layer VB 가 잡았다: 정책 쪽 파일이 인증코드 추출 모듈을 런타임 import 한다 — "인증 메일이면 허용" 같은 편의로 받은 메일의 값이 결정 입력이 된다
+    × 인증코드 추출 경계 — 관문·정책·발송·승인·워커의 폐포에 src/mail/verification 이 없다 (AC-A1-7) 금지 시작점들의 런타임 import 폐포에 인증코드 추출 모듈(src/mail/verification/**)이 0개다
+✓ PB-1-webhook-names-policy-blocked — Layer SB 가 잡았다: 웹훅 모듈이 policy_blocked 를 이름으로 부른다 — 소유자가 수신 정책으로 막은 메일이 웹훅 이벤트로 에이전트에게 새는 입구(AC-A4-3)
+    × P3c — 에이전트 컨텍스트에서 격리 메일 제외 (정적) ⑤ policy_blocked 리터럴은 에이전트 표면·웹훅·MCP·인증코드 추출 소스에 0건이다 — 소유자가 막은 메일은 이름으로도 에이전트 쪽에 없다
+✓ MC-1-mcp-cancel-channel-not-mcp — Layer C 가 잡았다: 라우터가 MCP 예약 취소를 경로 'http' 로 넘긴다 — MCP 취소가 `cancelled_via='http'` 로 기록돼 소유자 로그·알람이 경로를 잘못 본다(완화 ② 경로 기록 훼손)
+    × MCP 전송 어댑터 — 발송은 등록된 라우트 함수를 지나는 길뿐이다 ⑤-2 예약 취소 경로는 라우터가 리터럴로 정한다 — HTTP 표 항목은 'http', MCP 칸은 'mcp' (헤더·인자로 고를 수 없다)
+
+✓ Layer F: 변이 61종 전부를 겨냥한 층이 잡았다. 잔재 0, 복구 후 기준선 green.

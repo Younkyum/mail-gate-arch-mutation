@@ -1,0 +1,34 @@
+node_modules
+__pycache__/
+*.egg-info/
+dist/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+cdk.out/
+.cdk.staging/
+
+# OMC 런타임 산출물은 제외하되, 스펙·계획은 추적한다 (프로젝트의 기반 문서)
+.omc/state/
+.omc/logs/
+.omc/artifacts/
+.omc/handoffs/
+.omc/research/
+.omc/notepad.md
+.omc/project-memory.json
+# UI 스크린샷(`pnpm ui:shots` 기본 출력) — 로컬 산출물. 이미 추적 중인 파일은 그대로 둔다.
+.omc/shots/
+# 로컬 데이터셋(레드팀 수신 내보내기 · 평가 데이터) — 메일 본문이 들어 있다. 리포에 넣지 않는다.
+.omc/spikes/
+
+# 개발 전용 키 보관소 (src/passport/custody-local.ts). 운영에서는 이 경로가 선택되지 않는다.
+.atmark-dev-keys/
+
+# 개발 전용 객체 저장소 (src/storage/local-object-store.ts). 운영에서는 이 경로가 선택되지 않는다.
+.atmark-dev-storage/
+
+# 재현 스크립트 출력
+reproduction/out/

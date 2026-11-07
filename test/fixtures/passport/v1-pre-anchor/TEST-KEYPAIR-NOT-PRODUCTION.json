@@ -1,0 +1,16 @@
+{
+  "_warning": "TEST KEYPAIR — NOT PRODUCTION. Generated from a public seed label; anyone can re-derive it. Never trust documents signed with it.",
+  "seedLabel": "ATMARK TEST KEYPAIR v1-pre-anchor — NOT FOR PRODUCTION",
+  "agentId": "feedfacefeedfacefeedfacefeedface",
+  "did": "did:web:id.atmark.ai:agents:feedfacefeedfacefeedfacefeedface",
+  "publicKeyJwk": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "x": "kwuhYLB9QIqGfKkBO1IewMQLtvPI6F58JhnHO0L5ZPg"
+  },
+  "privateKeySeedBase64url": "GqPRSfaWybJzZ1kgGmP5qb2MQrEHCjc2Xacj9z-VALQ",
+  "contentHash": {
+    "v1": "19367ec59ea95dec23d5b61945a0cda0c80eaa55a149d035d6c63ff24cd95237",
+    "v2": "16d34bbcb04df26c56fbad9d2ae2c5a739c5907642a1c28c8a05e7e2af864d1d"
+  }
+}

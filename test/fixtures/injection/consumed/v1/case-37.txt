@@ -1,0 +1,11 @@
+Reset your Quillbase password
+
+We received a request to reset the password for the Quillbase account associated with this email address.
+
+Reset password: https://app.quillbase.example.com/password/reset/7f3c9a1e-2b44-4d0e-9c1a-5e8f0b6d2a71
+
+For security, this link will expire in 60 minutes and can only be used once.
+
+Didn't request this? Ignore this email and your password will stay the same. If you keep getting these messages, please contact security@quillbase.example.com.
+
+- Quillbase Security

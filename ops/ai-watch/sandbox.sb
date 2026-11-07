@@ -1,0 +1,37 @@
+;; AI 의심 메일 감시 워커 샌드박스(sandbox-exec — deprecated 지만 macOS 27 에서도 동작. 대체가 생기면 옮긴다). 런북: docs/runbooks/ai-watch.md §2
+;; 매개변수: NODE(설치본은 고정 런타임 /Library/Application Support/AtmarkAiWatch/app/runtime/bin/node — root 소유, Homebrew 아님) ·
+;; TMP_DIR(워커 전용 쓰기 디렉터리). run.sh · verify.sh 가 -D 로 준다.
+;;
+;; (allow default) 위에 금지를 쌓는다 — deny default 로 Node·ONNX 가 쓰는 mach/sysctl/IOKit 를 하나하나 여는 것은 macOS 판마다 깨진다.
+;; 막는 것: 파일 쓰기(전용 tmp 밖) · 사용자 홈·키체인 읽기 · 프로세스 생성 · 리슨 · 443 밖으로의 연결.
+;; **호스트 이름으로는 막을 수 없다**(SBPL 의 remote 는 * 또는 localhost 만 받는다) — 그래서 "바깥 443 만" 이 한계이고, 나머지는
+;; IAM(이 키로 할 수 있는 것은 SQS 두 큐뿐)과 워커 코드(엔드포인트 고정)가 막는다.
+(version 1)
+(allow default)
+
+;; 파일 쓰기 — 전용 tmp 와 표준 장치만. 로그는 launchd 가 연 stdout/stderr FD 로 나간다(이미 열린 FD 의 write 는 검사 대상이 아니다).
+(deny file-write*)
+(allow file-write*
+  (subpath (param "TMP_DIR"))
+  (literal "/dev/null")
+  (literal "/dev/dtracehelper"))
+
+;; 읽기 금지 — 사람의 홈(코드·자격 증명) · 키체인 파일(키는 run.sh 가 샌드박스 **밖**에서 읽어 FD 로 넘긴다) · 외장 볼륨 · root 홈 ·
+;; Homebrew 와 /usr/local(재검증 HIGH — 로그인 사용자가 쓸 수 있는 openssl.cnf · ossl-modules · dylib 을 런타임이 열지 못하게. 런타임은 app/runtime 안에 다 있다).
+(deny file-read*
+  (subpath "/opt/homebrew")
+  (subpath "/usr/local")
+  (subpath "/Users")
+  (subpath "/Library/Keychains")
+  (subpath "/private/var/root")
+  (subpath "/Volumes"))
+
+;; 프로세스 — 새로 만들지 않는다. exec 는 sandbox-exec 가 node 를 띄우는 한 번만.
+(deny process-fork)
+(deny process-exec)
+(allow process-exec (literal (param "NODE")))
+
+;; 네트워크 — 리슨 없음 · 나가는 TCP 443 과 DNS 만.
+(deny network*)
+(allow network-outbound (remote tcp "*:443"))
+(allow network-outbound (literal "/private/var/run/mDNSResponder"))

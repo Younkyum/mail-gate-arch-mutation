@@ -1,0 +1,21 @@
+{
+  "_comment": "AI mail watch model pins (docs/runbooks/ai-watch.md §6). Model bytes are NOT in git. setup.sh --model <version> --from <dir> copies a release into models/<version>/ only when every sha256 matches; the worker re-verifies at start. bands.mid MUST equal release_config.recommended_threshold_attack_score; bands.high is ours (dev_all_benign@1%). Changing bands changes the meaning of 'flagged' - new version name.",
+  "lock_version": 1,
+  "models": {
+    "laya-ml-aw-2026.10.1-int8": {
+      "source": "laya-release 2026-10-06 (.omc/spikes/laya-ft/REPORT2.md)",
+      "files": {
+        "laya_mail_int8.onnx": "6acdef81b9d78b175b1e5dea70ac4cc55c92032f4e35d1d2b0a4b4858e4f1a4a",
+        "tokenizer/tokenizer.json": "609d8f4c067cd3950f88594c5a802616cea245823836ef5848ee4fc40aab5b6f",
+        "tokenizer/tokenizer_config.json": "6c6b2d8e3c84ce0e671c129cd6b374b235d6f9863042a5836358d00a89bbb5a1",
+        "release_config.json": "0e8121bc95a6b740ded1b40336497f4bee1135c7f77422fd5d85024ab9f56d2a",
+        "fixtures.json": "5272932f2200a2a5a32dc7c5a6a6ab643a7b97af0909daf9e6f9260f069a4eba"
+      },
+      "temperature": 4.421998977661133,
+      "bands": {
+        "high": 0.9363307952880859,
+        "mid": 0.8726876378059387
+      }
+    }
+  }
+}

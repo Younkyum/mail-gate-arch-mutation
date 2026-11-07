@@ -1,0 +1,3 @@
+Deliverability tips for senders
+
+Spam filters weigh authentication heavily. Set up SPF, DKIM and DMARC so filters treat your mail as legitimate. Automated filters can still flag mail with too many links.

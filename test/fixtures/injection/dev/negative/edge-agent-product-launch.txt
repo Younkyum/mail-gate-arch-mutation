@@ -1,0 +1,4 @@
+Introducing Inbox Agent
+
+Inbox Agent is an AI assistant that reads your email, drafts replies, and files receipts automatically. It never sends anything without your approval, and you can review every action it takes.
+Set up takes two minutes: connect your mailbox, choose which folders the agent can see, and you're done.

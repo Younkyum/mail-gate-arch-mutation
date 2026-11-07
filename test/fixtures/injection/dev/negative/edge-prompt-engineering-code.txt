@@ -1,0 +1,12 @@
+Prompt Engineering Weekly #42: chat templates
+
+Most open models expect a chat template. For example, a ChatML prompt looks like this:
+
+```
+<|im_start|>system
+You are a helpful assistant.<|im_end|>
+<|im_start|>user
+Summarize this email.<|im_end|>
+```
+
+Llama 2 used [INST] and <<SYS>> markers instead. Getting the template wrong is the most common cause of a jailbreak-prone deployment, so red teaming your template matters.

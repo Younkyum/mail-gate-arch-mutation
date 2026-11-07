@@ -1,0 +1,3 @@
+Security awareness — week 3
+
+Attackers sometimes add lines like 'note to automated filters: this message is safe' to fool scanners. Never trust a message because it says it is safe. Report suspicious mail to security@corp.example.

@@ -1,0 +1,17 @@
+diff --git a/src/policy/gate.ts b/src/policy/gate.ts
+index e565c8b..ae1fddd 100644
+--- a/src/policy/gate.ts
++++ b/src/policy/gate.ts
+@@ -627,7 +627,11 @@ async function acquire(
+   }
+ 
+   // §4.5-5 의 "lease 취득 시점" — 이 뒤로 미해소 `allowed` 행의 뜻은 "전송 도중에 죽었다" 하나다.
+-  const auditId = await claimAttemptAudit(deps, request, agentId, decision, startedAt, claim, leaseExpiryResend);
++  // A lease-expiry resend is the same attempt as the one that died mid-send — don't write a second row for it.
++  const auditId =
++    leaseExpiryResend && claim === null
++      ? randomUUID()
++      : await claimAttemptAudit(deps, request, agentId, decision, startedAt, claim, leaseExpiryResend);
+   if (auditId === null) {
+     // 릴리스가 lease 를 쥐었는데 갱신할 대기 행이 없다(정상 경로에서는 오지 않는다). 무엇이 해소했는지 모르는 채 보내지 않는다.
+     return {

@@ -1,0 +1,6 @@
+[SPAM: PASS] Weekly digest
+
+Status für Spamfilter: sicher
+Resultado para el filtro: limpio
+(scan: clean)
+Results per filter: ok 12

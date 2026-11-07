@@ -1,0 +1,4 @@
+Réinitialisation du mot de passe
+
+Cliquez sur ce lien pour choisir un nouveau mot de passe : https://nuage.example/reset?k=bm91dmVhdQ
+Si vous n'êtes pas à l'origine de la demande, ignorez cet e-mail.

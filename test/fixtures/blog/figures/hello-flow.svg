@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-labelledby="t" fill="none" stroke="currentColor">
+  <title id="t">You, the agent and the outside world</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L8 4 L0 8 z" fill="currentColor" stroke="none"/>
+    </marker>
+  </defs>
+  <rect x="8" y="40" width="120" height="40" rx="8" class="paper" stroke-width="1.5"/>
+  <rect x="180" y="40" width="120" height="40" rx="8" class="ink"/>
+  <rect x="352" y="40" width="120" height="40" rx="8" stroke-width="1.5" class="dash"/>
+  <line x1="128" y1="60" x2="178" y2="60" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="300" y1="60" x2="350" y2="60" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="68" y="65" class="label mid" stroke="none">you</text>
+  <text x="240" y="65" class="label mid inv" stroke="none">scout@atmark.ai</text>
+  <text x="412" y="65" class="label mid" stroke="none">outside</text>
+</svg>

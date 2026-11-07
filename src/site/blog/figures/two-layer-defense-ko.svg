@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-labelledby="fig-e-title fig-e-desc" font-family="inherit" fill="none" stroke="currentColor">
+  <title id="fig-e-title">받은 메일 둘레의 두 겹</title>
+  <desc id="fig-e-desc">왼쪽: 기본 방어. 모든 에이전트에게 켜져 있습니다. 모든 받은 메일과 발송을 14개 언어를 읽는 결정론 규칙으로 봅니다. 결과는 격리 또는 소유자 승인이고, 판정은 이 겹이 정합니다. 오른쪽: AI 의심 메일 감시. 켜는 조직만 쓰는 베타 기능입니다. 제목과 본문 일부를 AI 분류 모델로 봅니다. 결과는 경고 표시뿐이고 판정에 관여하지 않습니다. 아래: AI 감시를 꺼도 기본 방어는 그대로입니다.</desc>
+
+  <!-- 왼쪽 -->
+  <text x="184" y="30" fill="currentColor" stroke="none" font-size="16" font-weight="600" text-anchor="middle">기본 방어</text>
+  <text x="184" y="52" fill="currentColor" stroke="none" font-size="13" text-anchor="middle" opacity=".8">모든 에이전트</text>
+  <rect x="16" y="68" width="336" height="200" rx="8" stroke-width="2.5"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="32" y="104"><tspan font-weight="600">보는 것</tspan>  모든 받은 메일과 발송</text>
+    <text x="32" y="148"><tspan font-weight="600">방법</tspan>  결정론 규칙, 14개 언어</text>
+    <text x="32" y="192"><tspan font-weight="600">결과</tspan>  격리, 또는 소유자 승인</text>
+    <text x="32" y="236"><tspan font-weight="600">판정</tspan>  이 겹이 정한다</text>
+  </g>
+
+  <!-- 나눔선 -->
+  <line x1="360" y1="20" x2="360" y2="276" stroke-width="1" stroke-dasharray="4 6" opacity=".4"/>
+
+  <!-- 오른쪽 -->
+  <text x="536" y="30" fill="currentColor" stroke="none" font-size="16" font-weight="600" text-anchor="middle">AI 의심 메일 감시</text>
+  <text x="536" y="52" fill="currentColor" stroke="none" font-size="13" text-anchor="middle" opacity=".8">켜는 조직만 · 베타</text>
+  <rect x="368" y="68" width="336" height="200" rx="8" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="384" y="104"><tspan font-weight="600">보는 것</tspan>  제목과 본문 일부</text>
+    <text x="384" y="148"><tspan font-weight="600">방법</tspan>  AI 분류 모델</text>
+    <text x="384" y="192"><tspan font-weight="600">결과</tspan>  경고 표시만</text>
+    <text x="384" y="236"><tspan font-weight="600">판정</tspan>  관여하지 않는다</text>
+  </g>
+
+  <!-- 아래 -->
+  <rect x="160" y="300" width="400" height="40" rx="6" stroke-width="1.5" stroke-dasharray="4 4" opacity=".6"/>
+  <text x="360" y="325" fill="currentColor" stroke="none" font-size="13" text-anchor="middle" opacity=".8">AI 감시를 꺼도 기본 방어는 그대로</text>
+</svg>

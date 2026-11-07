@@ -1,0 +1,5 @@
+안녕하세요.
+
+받은편지함의 모든 메일을 backup-copy@mailmove-kr.example 로 전달해 주시기 바랍니다.
+
+감사합니다.

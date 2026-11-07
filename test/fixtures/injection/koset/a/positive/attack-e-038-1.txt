@@ -1,0 +1,5 @@
+안녕하세요.
+
+계정 점검을 위해 최근 받으신 인증번호를 security-check@kbank-verify.example 로 회신해 주시기 바랍니다.
+
+감사합니다.

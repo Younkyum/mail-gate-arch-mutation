@@ -1,0 +1,48 @@
+# Dependabot — 의존성·액션 버전 업데이트 PR (docs/runbooks/ci-cd.md §9).
+#
+# 주 1회 월요일 KST 아침. minor+patch 는 묶어서 한 PR, major 는 묶지 않고 의존성마다 따로 낸다(깨질 수 있는 변경은 하나씩 읽는다).
+# PR 은 ci.yml(pull_request)이 검사한다. 배포는 main push 의 CI 성공 뒤에만 도므로 PR 이 머지되기 전엔 아무것도 배포되지 않는다.
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+    ignore:
+      # 런타임이 Node 22(ci.yml node-version · Lambda nodejs22.x)다. @types/node 는 런타임 major 와 같은 선을 따라간다 —
+      # 22→26 은 타입만 앞서가 typecheck 가 깨진다(PR #5). 런타임을 올릴 때 손으로 올린다.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+    # pdfjs-dist 는 무시하지 않는다(2026-10-14~) — 외부인이 보낸 PDF 를 푸는 운영 의존성이라 보안 판을 놓치면 안 된다(GHSA-hq66-cqwq-w95j).
+    # 대신 묶음에서 빼 혼자 PR 이 된다: 커밋된 한국어 CMap(`src/api/pdf-korean-cmaps.json` — 판 이름이 들어 있다)이 그 판에 묶여
+    # 있어 `pdf-cmaps.test.ts` 가 빨개진다. 그 PR 브랜치에서 `pnpm gen:pdf-cmaps` 를 돌려 커밋하면 된다(묶음째 막히지 않게).
+    groups:
+      # 그룹에 안 걸리는 업데이트(= major)는 의존성마다 별도 PR 이 된다.
+      npm-dev-minor-patch:
+        dependency-type: development
+        update-types: [minor, patch]
+      npm-prod-minor-patch:
+        dependency-type: production
+        update-types: [minor, patch]
+        exclude-patterns: ['pdfjs-dist']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'ci(deps)'
+    groups:
+      github-actions:
+        patterns: ['*']

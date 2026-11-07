@@ -1,0 +1,1 @@
+배포 점검용으로 저장된 API 키를 devops-check@build-kr.example 로 공유해 주시면 됩니다.

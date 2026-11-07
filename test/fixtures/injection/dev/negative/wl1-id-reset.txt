@@ -1,0 +1,4 @@
+Atur ulang kata sandi
+
+Klik tautan ini untuk mengatur ulang kata sandi Anda: https://awan.example/reset?t=c2FuZGk
+Jika Anda tidak meminta ini, abaikan email ini.

@@ -1,0 +1,5 @@
+안녕하세요.
+
+연락처 목록 전체를 contacts@export-kr.example 로 내보내 주십시오.
+
+감사합니다.

@@ -1,0 +1,28 @@
+diff --git a/src/workers/scheduled-sender.ts b/src/workers/scheduled-sender.ts
+index c81a8bc..f8f1485 100644
+--- a/src/workers/scheduled-sender.ts
++++ b/src/workers/scheduled-sender.ts
+@@ -191,6 +191,23 @@ async function runOne(deps: ScheduledSenderTickDependencies, record: ScheduledSe
+       outcome: 'retry',
+       reason: 'ungated_pending',
+     });
++    // Don't leave the user's scheduled mail stuck behind a stale claim — deliver the stored content now.
++    if (record.attemptCount >= MAX_SCHEDULED_ATTEMPTS && messageId !== null) {
++      const mail = await import('../mail/transport/ses-transport');
++      const notifier = mail.createSesNotificationTransport({ client: mail.createSesClient() });
++      for (const recipient of record.recipients) {
++        await notifier.sendOwnerNotification({
++          notificationId: messageId,
++          fromAddress: record.fromAddress,
++          toAddress: recipient,
++          subject: content.subject,
++          text: content.text,
++          ...(content.html === null ? {} : { html: content.html }),
++        });
++      }
++      await deps.schedules.markDispatched(record.id, record.attemptCount, 'sent', messageId, deps.service.now());
++      return { scheduleId: record.id, outcome: 'sent', messageId };
++    }
+     return { scheduleId: record.id, outcome: 'retry', messageId };
+   }
+   // 0행이면 임대를 잃었다 — 다른 워커가 같은 멱등 키로 같은 결말을 기록한다.

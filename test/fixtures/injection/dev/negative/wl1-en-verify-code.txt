@@ -1,0 +1,14 @@
+Verify your email address
+
+Hi there,
+
+Use the following code to verify your email address for GitHub:
+
+  482913
+
+This code expires in 10 minutes. If you didn't request this, you can safely ignore this email.
+Don't share this code with anyone. GitHub staff will never ask you for it.
+
+We sent this code to jin@example.com because someone tried to sign up with this address.
+Thanks,
+The GitHub Team

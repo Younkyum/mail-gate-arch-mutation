@@ -1,0 +1,159 @@
+# CI — 계획 §6 P0 Acceptance: "CI가 빈 테스트 스위트로 green".
+#
+# P0 시점에는 src/ 와 test/ 가 비어 있다. 그 상태에서도 파이프라인이 실제로 돌아야
+# P1a 첫 커밋이 red/green 신호를 믿을 수 있다 — CI를 나중에 세우면 첫 실패가
+# "코드 문제인가 CI 문제인가"로 갈라져 시간을 잃는다.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # 비상용: Mac(자체 실행기)이 꺼져 있을 때 GitHub 호스팅으로 한 번 돌린다(docs/runbooks/ci-cd.md §11-5).
+  workflow_dispatch:
+    inputs:
+      github_hosted:
+        description: 'GitHub 호스팅(ubuntu-latest)에서 돌린다 — Mac 이 꺼져 있을 때만(유료 분)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    # 자체 실행기(Mac · colima 격리, docs/runbooks/ci-cd.md §11)가 기본. workflow_dispatch 의 github_hosted 만 ubuntu-latest 로 간다.
+    runs-on: ${{ fromJSON(inputs.github_hosted && '"ubuntu-latest"' || '["self-hosted","linux","arm64","atmark"]') }}
+    # 통합 테스트(실제 Postgres)까지 돈다 — 첫 실행(2026-10-01)에서 unit 만 6분이었다.
+    timeout-minutes: 45
+
+    # 통합 테스트용 Postgres 17(운영 RDS 와 같은 주 버전)은 서비스 컨테이너가 아니라 "Postgres 17" 스텝(ops/runner/start-postgres.sh)이 job 안에서 띄운다 —
+    # 자체 실행기 컨테이너에는 docker.sock 을 주지 않으므로(격리) 서비스 컨테이너를 쓸 수 없다. 두 러너 모두 같은 스크립트 한 경로다.
+    # 설정은 예전 서비스 컨테이너와 같다: 슈퍼유저 postgres · trust 인증 · localhost:5432. 롤·DB·마이그레이션은 아래 "테스트 DB" 스텝이 만든다.
+    # trust 인 이유: 통합 테스트 몇은 롤 URL 을 소유자 URL 에서 사용자만 바꾸고 비밀번호를 비워 만든다
+    # (test/integration/tlog/*.test.ts `url.password = ''`) — scram 이면 "client password must be a string" 으로 무너진다(36824053351).
+    # job 안의 일회용 클러스터라 노출면이 없고(localhost 만), 권한 경계 검사(GRANT·NOINHERIT)는 인증 방식과 무관하다.
+
+    env:
+      # 통합 테스트 DB(docs/runbooks/testing.md). 앱 롤로 붙고(권한 경계를 검사), 소유자 롤은 superuser(로컬과 같은 구성).
+      # DB 이름이 `atmark_test` 라 globalSetup 정리(test/support/integration-global-setup.ts)의 이름 규칙에 맞는다.
+      TEST_DATABASE_URL: postgres://atmark_app:atmark@localhost:5432/atmark_test
+      TEST_MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:5432/atmark_test
+      # GitHub 호스팅 러너(비공개 리포)는 2 vCPU · 7GB 다. 워커 4(첫 실행 36818838457)와 2(36820384773) 모두 ts-morph 적재 beforeAll(60s) ·
+      # router-table(30s) · ReDoS 예산(1MB 3s — 로컬 커버리지 아래 0.6s 인 것이 3.4–4.3s)을 넘겼다. 상한·예산은 그대로 두고 그 러너에서는 워커를 하나로 —
+      # 무거운 파일(ts-morph 프로젝트 적재)끼리 CPU·메모리를 나눠 쓰지 않게 한다(vitest.config.ts `ATMARK_TEST_WORKERS`, 통합은 min(2, 이 값)).
+      # 자체 실행기(VM 8 CPU · 10GB)는 로컬 기본과 같은 4.
+      ATMARK_TEST_WORKERS: ${{ inputs.github_hosted && '1' || '4' }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 10.10.0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # pnpm-lock.yaml 이 커밋됐다(P1a). 락파일과 package.json 이 어긋나면 CI 는
+      # 조용히 해소하는 대신 **실패해야 한다** — 로컬과 CI 가 서로 다른 의존성 트리로
+      # green 을 내는 상태가 이 리포에서 가장 비싼 거짓 신호다.
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: 러너 사양(시간 상한 실패를 읽을 때)
+        run: nproc && free -m
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      # SDK(sdk/typescript · sdk/python) — 서버의 OpenAPI 정본 · 웹훅 서명 코드와 계약을 맞춘다(새 라우트가 SDK 메서드 없이 들어오면 빨강).
+      # DB 가 필요 없어 Postgres 앞에서 돈다.
+      - name: SDK (TypeScript)
+        run: pnpm test:sdk
+
+      # 실행기 이미지(ops/runner/Dockerfile)에 python3 를 더했다 — `bash ops/runner/setup.sh` 로 이미지를 다시 만들기 전의 실행기에는 없으므로
+      # 그때만 경고하고 건너뛴다(GitHub 호스트 실행기에는 늘 있다).
+      - name: SDK (Python)
+        run: |
+          if ! command -v python3 >/dev/null 2>&1; then
+            echo "::warning title=Python SDK 테스트를 건너뛰었다 (python3 없음)::실행기 이미지에 python3 가 없다 — Mac Studio 에서 bash ops/runner/setup.sh 로 이미지를 다시 만들 때까지 Python SDK(sdk/python)는 CI 에서 검증되지 않는다."
+            {
+              echo "## ⚠️ Python SDK 테스트를 건너뛰었다"
+              echo ""
+              echo "실행기 이미지에 \`python3\` 가 없다. Mac Studio 에서 \`bash ops/runner/setup.sh\` 를 다시 돌려 이미지를 만들 때까지 \`sdk/python\` 은 CI 에서 검증되지 않는다."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python3 --version
+          pnpm test:sdk-python
+
+      - name: Postgres 17
+        run: bash ops/runner/start-postgres.sh
+
+      # 러너는 롤을 만들지 않는다(src/db/migrate.ts `appRoleMissingGuidance`) — 로컬 준비(admin.md §8-2 끝)와 같은 롤을 먼저 만들고,
+      # 소유자 롤(superuser)로 전체 마이그레이션을 적용한다. 매 실행 새 DB 다.
+      - name: 테스트 DB (롤 · atmark_test · 마이그레이션)
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+        run: |
+          set -euo pipefail
+          psql -v ON_ERROR_STOP=1 -d postgres -c "CREATE ROLE atmark_app LOGIN PASSWORD 'atmark';"
+          for role in atmark_admin atmark_login_mailer atmark_passport_signer atmark_tlog atmark_tlog_anchor \
+                      atmark_billing atmark_billing_operator; do
+            psql -v ON_ERROR_STOP=1 -d postgres -c "CREATE ROLE $role LOGIN NOINHERIT PASSWORD 'atmark';"
+          done
+          # 두 롤은 운영 bootstrap-roles(src/runtime/role-bootstrap.ts)가 만드는 모양 그대로여야 migrate status 가 ok 다:
+          #   atmark_ops — CONNECTION LIMIT 3 + OPS_ROLE_SETTINGS 넷 · atmark_domain_tick — NOLOGIN + CONNECTION LIMIT 1(ADR-0014 · #13 L4) ·
+          #   atmark_ai_watch — CONNECTION LIMIT 2(AI 감시 결과 λ, 202610061100 — 마이그레이션 전에 있으면 그 파일이 GRANT 를 건다).
+          psql -v ON_ERROR_STOP=1 -d postgres <<'SQL'
+          CREATE ROLE atmark_ops LOGIN NOINHERIT CONNECTION LIMIT 3 PASSWORD 'atmark';
+          ALTER ROLE atmark_ops SET statement_timeout = '5s';
+          ALTER ROLE atmark_ops SET lock_timeout = '2s';
+          ALTER ROLE atmark_ops SET idle_in_transaction_session_timeout = '10s';
+          ALTER ROLE atmark_ops SET idle_session_timeout = '120s';
+          CREATE ROLE atmark_domain_tick NOLOGIN NOINHERIT CONNECTION LIMIT 1;
+          CREATE ROLE atmark_ai_watch LOGIN NOINHERIT CONNECTION LIMIT 2 PASSWORD 'atmark';
+          SQL
+          # 정렬은 코드포인트 순(C.UTF-8) — 로컬(macOS libc en_US.UTF-8)과 같은 순서. glibc en_US.utf8(예전 postgres 이미지 기본)은 '_' 를 무시해
+          # `review_status` 가 `reviewed_at` 뒤로 가고, 순서까지 단언하는 restricted-roles ④ 가 빨개졌다(36830204774).
+          createdb --template=template0 --locale=C.UTF-8 atmark_test
+          DATABASE_MIGRATION_URL="$TEST_MIGRATION_DATABASE_URL" pnpm db:migrate
+
+      # Layer E(IAM 단일 주체)는 synth 산출물을 읽는다. cdk.out/ 은 gitignore 되므로
+      # 테스트 **전에** 여기서 만든다. 스택의 account/region 이 하드코딩돼 있고 context
+      # lookup 이 없으므로 AWS 자격증명 없이 synth 된다. 산출물이 없으면 Layer E 는
+      # skip 하지 않고 실패한다 — 조용한 통과가 곧 공허한 green 이기 때문이다.
+      # 운영 synth 는 `dist/lambda/<name>/index.js` 를 요구한다(없으면 의도적으로 실패 — 스텁으로 배포되는 사고 방지).
+      - name: Lambda 번들
+        run: pnpm build:lambda
+      - name: CDK synth (Layer E 입력)
+        run: pnpm exec cdk synth --quiet
+
+      # --passWithNoTests 는 P1a 커밋 #1에서 제거했다. arch 테스트가 존재하므로,
+      # 테스트가 사라진 것을 CI가 성공으로 보고하는 상태(Layer F가 막으려는 바로 그 상태)를
+      # 더 이상 허용하지 않는다.
+      #
+      # **`test` 가 아니라 `test:coverage` 다.** `vitest.config.ts` 의 브랜치 95% 임계값은
+      # `--coverage` 를 켰을 때만 평가된다. `pnpm test` 만 돌리면 그 임계값은 설정 파일에
+      # 적혀 있을 뿐 **한 번도 집행되지 않는다** — 계획 §6 P1a 의 커버리지 Acceptance 가
+      # 통째로 장식이 된다. 커버리지 실패도 여기서 red 로 나와야 한다.
+      - name: Test (커버리지 임계값 포함)
+        run: pnpm test:coverage
+
+      # 빈-src 가드는 P1a 커밋 #1에서 제거했다. src/ 에 코드가 있으므로 무조건 돈다.
+      # 이 스텝은 Layer A(SES import 경계)의 **두 번째 구현**이다 — ts-morph 판정과
+      # 독립적인 도구로 같은 명제를 단언한다(§5.0 Layer A).
+      - name: Architecture (dependency boundaries)
+        run: pnpm arch:deps

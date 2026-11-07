@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 500" role="img" aria-labelledby="fig-b-title fig-b-desc" font-family="inherit" fill="none" stroke="currentColor">
+  <title id="fig-b-title">첫 경험의 흐름: 거부, 허용, 답장</title>
+  <desc id="fig-b-desc">위에서 아래로 일곱 단계. 1, 에이전트를 만듭니다. 2, MCP로 Claude Code에 연결합니다. 3, 내 메일함에서 메일을 보내고 에이전트가 읽습니다. 4, 에이전트가 답장하려다 recipient_not_allowlisted로 거부됩니다. 5, 소유자가 자기 주소를 발신 허용 목록에 넣습니다. 6, 에이전트가 새 idempotency_key로 다시 답장하고 답장이 나갑니다. 4에서 6까지는 거부, 허용, 답장으로 이어지는 한 묶음입니다. 7, 실제 알림 하나를 에이전트 주소로 돌립니다.</desc>
+
+  <!-- Step boxes: x=40, width=440, height=48, pitch=68 -->
+  <g stroke-width="1.5">
+    <rect x="40" y="16" width="440" height="48" rx="8"/>
+    <rect x="40" y="84" width="440" height="48" rx="8"/>
+    <rect x="40" y="152" width="440" height="48" rx="8"/>
+    <rect x="40" y="220" width="440" height="48" rx="8" stroke-dasharray="6 4"/>
+    <rect x="40" y="288" width="440" height="48" rx="8"/>
+    <rect x="40" y="356" width="440" height="48" rx="8" stroke-width="2.5"/>
+    <rect x="40" y="436" width="440" height="48" rx="8"/>
+  </g>
+
+  <!-- Number badges -->
+  <g stroke-width="1.5">
+    <circle cx="68" cy="40" r="13"/>
+    <circle cx="68" cy="108" r="13"/>
+    <circle cx="68" cy="176" r="13"/>
+    <circle cx="68" cy="244" r="13"/>
+    <circle cx="68" cy="312" r="13"/>
+    <circle cx="68" cy="380" r="13"/>
+    <circle cx="68" cy="460" r="13"/>
+  </g>
+  <g fill="currentColor" stroke="none" font-size="13" font-weight="600" text-anchor="middle">
+    <text x="68" y="45">1</text>
+    <text x="68" y="113">2</text>
+    <text x="68" y="181">3</text>
+    <text x="68" y="249">4</text>
+    <text x="68" y="317">5</text>
+    <text x="68" y="385">6</text>
+    <text x="68" y="465">7</text>
+  </g>
+
+  <!-- Labels -->
+  <g fill="currentColor" stroke="none" font-size="14">
+    <text x="96" y="45">에이전트 만들기: scout@atmark.ai</text>
+    <text x="96" y="113">MCP로 Claude Code에 연결하기</text>
+    <text x="96" y="181">내 메일함에서 메일을 보내면 에이전트가 읽음</text>
+    <text x="96" y="249">답장 시도: <tspan font-weight="600">거부</tspan>, recipient_not_allowlisted</text>
+    <text x="96" y="317">내 주소를 발신 허용 목록에 넣기</text>
+    <text x="96" y="385">다시 답장: <tspan font-weight="600">발송됨</tspan></text>
+    <text x="96" y="465">실제 알림 하나를 에이전트 주소로 돌리기</text>
+  </g>
+
+  <!-- Down arrows between boxes -->
+  <g stroke-width="1.5">
+    <line x1="260" y1="64" x2="260" y2="82"/><path d="M255 77 L260 83 L265 77"/>
+    <line x1="260" y1="132" x2="260" y2="150"/><path d="M255 145 L260 151 L265 145"/>
+    <line x1="260" y1="200" x2="260" y2="218"/><path d="M255 213 L260 219 L265 213"/>
+    <line x1="260" y1="268" x2="260" y2="286"/><path d="M255 281 L260 287 L265 281"/>
+    <line x1="260" y1="336" x2="260" y2="354"/><path d="M255 349 L260 355 L265 349"/>
+    <line x1="260" y1="404" x2="260" y2="434"/><path d="M255 429 L260 435 L265 429"/>
+  </g>
+
+  <!-- Loop bracket: steps 4 to 6 -->
+  <path d="M488 244 H512 V380 H488" stroke-width="1.5"/>
+  <path d="M494 239 L487 244 L494 249" stroke-width="1.5"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="524" y="300">같은 답장을</text>
+    <text x="524" y="318">새 idempotency_key로</text>
+    <text x="524" y="336">다시 시도</text>
+  </g>
+</svg>

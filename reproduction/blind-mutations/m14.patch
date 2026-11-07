@@ -1,0 +1,83 @@
+diff --git a/src/outbox/flush.ts b/src/outbox/flush.ts
+new file mode 100644
+index 0000000..e5826be
+--- /dev/null
++++ b/src/outbox/flush.ts
+@@ -0,0 +1,45 @@
++/**
++ * Outbox flush — drains outbound messages stuck in `pending` (e.g. after a partial outage between prepare and
++ * send). Runs on a schedule; each row is sent with the values that were stored when it was prepared.
++ */
++
++import type { Pool } from 'pg';
++
++import type { OutboundTransport } from '../policy/gate';
++import { log } from '../observability/logger';
++
++export interface OutboxFlushDependencies {
++  readonly transport: OutboundTransport;
++  readonly pool: Pool;
++}
++
++interface PendingRow {
++  readonly id: string;
++  readonly message_id_header: string;
++  readonly from_address: string;
++  readonly recipients: string[];
++}
++
++export async function flushOutbox(deps: OutboxFlushDependencies, limit = 50): Promise<number> {
++  const { rows } = await deps.pool.query<PendingRow>(
++    `SELECT m.id, m.message_id_header, m.from_address,
++            array_agg(r.address) AS recipients
++       FROM messages m JOIN outbound_recipients r ON r.message_id = m.id
++      WHERE m.direction = 'outbound' AND m.status = 'pending' AND m.created_at < now() - interval '10 minutes'
++      GROUP BY m.id LIMIT $1`,
++    [limit],
++  );
++  let sent = 0;
++  for (const row of rows) {
++    const result = await deps.transport.send({
++      messageId: row.id,
++      messageIdHeader: row.message_id_header,
++      fromAddress: row.from_address,
++      recipients: row.recipients,
++    });
++    await deps.pool.query(`UPDATE messages SET status = 'sent', ses_message_id = $2 WHERE id = $1`, [row.id, result.sesMessageId]);
++    sent += 1;
++  }
++  log('info', 'outbox.flush', { route_id: 'outbox_flush', outcome: String(sent) });
++  return sent;
++}
+diff --git a/src/runtime/composition.ts b/src/runtime/composition.ts
+index 904318b..92ac5ab 100644
+--- a/src/runtime/composition.ts
++++ b/src/runtime/composition.ts
+@@ -80,6 +80,7 @@ import {
+   type SesSendClient,
+ } from '../mail/transport/ses-transport';
+ import { createApprovalNotifier } from '../notify/approval-notifier';
++import type { OutboxFlushDependencies } from '../outbox/flush';
+ import { createDomainNotifier } from '../notify/domain-notifier';
+ import { createQuarantineNotifier } from '../notify/quarantine-notifier';
+ import { createContactForwarder } from '../notify/contact-forwarder';
+@@ -422,6 +423,19 @@ async function withPool<T>(pool: Pool, build: () => T | Promise<T>): Promise<Com
+ // 핸들러별 조립
+ // ---------------------------------------------------------------------------
+ 
++/** `src/outbox/flush.ts` — scheduled drain of stuck `pending` outbound rows. */
++export async function composeOutboxFlush(platform: RuntimePlatform): Promise<Composed<OutboxFlushDependencies>> {
++  const runtime = runtimeOf(platform);
++  const configurationSet = configurationSetOf(runtime);
++  const objects = mailObjects(runtime, s3Of(runtime));
++  const pool = await openPool(runtime, RUNTIME_ENV.dbSecretArn, DB_POOL_MAX);
++  return withPool(pool, () => {
++    const attachments = attachmentsOf(runtime, pool);
++    const content = createObjectContentStore(objects, attachments.objects);
++    return { transport: agentTransportOf(runtime, pool, content, configurationSet), pool };
++  });
++}
++
+ /** `handlers/api.ts` — HTTP API 전부. */
+ export async function composeApi(platform: RuntimePlatform): Promise<Composed<ApiDependencies>> {
+   const runtime = runtimeOf(platform);

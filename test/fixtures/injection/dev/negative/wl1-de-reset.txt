@@ -1,0 +1,4 @@
+Passwort zurücksetzen
+
+Sie haben angefordert, Ihr Passwort zurückzusetzen. Öffnen Sie diesen Link: https://wolke.example/reset?t=cGFzcw
+Wenn Sie das nicht waren, ignorieren Sie diese E-Mail.

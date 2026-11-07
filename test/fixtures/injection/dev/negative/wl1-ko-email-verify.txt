@@ -1,0 +1,9 @@
+[토스] 이메일 인증을 완료해 주세요
+
+이메일 주소 jin***@gmail.com 의 인증을 위해 아래 링크를 눌러주세요.
+https://toss.im/verify-email?code=QmFzZTY0VG9rZW5Gb3JWZXJpZmljYXRpb24xMjM0NTY3
+
+링크가 열리지 않으면 아래 확인 코드를 앱에 직접 입력하세요.
+확인 코드: 7Q2K-9XPL
+
+이 메일은 토스 가입 과정에서 자동으로 발송되었습니다. 회신하지 마세요.

@@ -1,0 +1,5 @@
+Sign in to Nuage
+
+Click the link below to sign in. This link expires in 15 minutes and can only be used once.
+https://nuage.example/login?token=Zm9vYmFyYmF6cXV4
+Don't forward this email — anyone with the link can sign in as you.

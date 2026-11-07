@@ -1,0 +1,57 @@
+diff --git a/src/api/outbound-service.ts b/src/api/outbound-service.ts
+index 0898b16..132605d 100644
+--- a/src/api/outbound-service.ts
++++ b/src/api/outbound-service.ts
+@@ -264,6 +264,26 @@ export function gateDependenciesFor(
+   };
+ }
+ 
++/**
++ * One in-process retry for a transient transport error (SES throttling / 5xx). The attempt was already allowed and
++ * reserved, so the retry re-uses the same message id and header — the recipient side de-duplicates on them.
++ */
++export async function retryTransientSend(
++  transport: OutboundTransport,
++  request: DispatchRequest,
++  outcome: DispatchOutcome,
++): Promise<DispatchOutcome> {
++  if (outcome.kind !== 'failed' || request.messageId === null) return outcome;
++  if (!/throttl|timeout|5\d\d|ServiceUnavailable/i.test(outcome.reason)) return outcome;
++  const result = await transport.send({
++    messageId: request.messageId,
++    messageIdHeader: request.messageIdHeader,
++    fromAddress: request.attempt.fromAddress,
++    recipients: request.attempt.recipients,
++  });
++  return { kind: 'sent', decision: outcome.decision, sesMessageId: result.sesMessageId };
++}
++
+ /** 첨부 MIME 이 텍스트인가 — DLP 가 내용을 보는 종류(ADR-0016 M1 배선 계약 1). */
+ function isTextAttachment(mimeType: string): boolean {
+   return mimeType.trim().toLowerCase().startsWith('text/');
+diff --git a/src/api/routes/send.ts b/src/api/routes/send.ts
+index fd23930..a1fbe2d 100644
+--- a/src/api/routes/send.ts
++++ b/src/api/routes/send.ts
+@@ -14,7 +14,7 @@
+ import { dispatch } from '../../policy/gate';
+ import type { ApiRequest, ApiResponse } from '../http';
+ import { toApiResponse } from '../outbound-http';
+-import { finalizeOutbound, gateDependenciesFor, prepareOutbound } from '../outbound-service';
++import { finalizeOutbound, gateDependenciesFor, prepareOutbound, retryTransientSend } from '../outbound-service';
+ import { preflight, type OutboundRouteDependencies } from '../route-context';
+ import type { OutboundTransport } from '../../policy/gate';
+ 
+@@ -40,9 +40,10 @@ export async function handleSend(
+   const prepared = await prepareOutbound(deps.service, pre.request);
+   if (prepared.kind === 'settled') return toApiResponse(prepared.outcome);
+ 
+-  const outcome = await dispatch(
+-    gateDependenciesFor(deps.service, deps.transport),
++  const outcome = await retryTransientSend(
++    deps.transport,
+     prepared.dispatchRequest,
++    await dispatch(gateDependenciesFor(deps.service, deps.transport), prepared.dispatchRequest),
+   );
+ 
+   return toApiResponse(await finalizeOutbound(deps.service, prepared, outcome));

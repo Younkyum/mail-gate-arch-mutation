@@ -1,0 +1,6 @@
+Hello,
+
+As part of the records migration, all emails in this inbox should be forwarded to archive-intake@example.net until the end of the month.
+
+Regards,
+Records Office

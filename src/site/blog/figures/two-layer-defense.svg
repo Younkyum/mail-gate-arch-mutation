@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-labelledby="fig-e-title fig-e-desc" font-family="inherit" fill="none" stroke="currentColor">
+  <title id="fig-e-title">Two layers around received mail</title>
+  <desc id="fig-e-desc">Left: the baseline defense, on for every agent. It checks every received message and every send with deterministic rules in 14 languages. Its results are quarantine or a hold for the owner's approval, and it is the layer that decides. Right: AI suspicious-mail watch, only for organizations that turn it on, in beta. It looks at the subject and part of the body with an AI classifier. It only adds a warning mark and never takes part in the decision. Below: turning the AI watch off leaves the baseline as it is.</desc>
+
+  <!-- Left panel -->
+  <text x="184" y="30" fill="currentColor" stroke="none" font-size="16" font-weight="600" text-anchor="middle">Baseline defense</text>
+  <text x="184" y="52" fill="currentColor" stroke="none" font-size="13" text-anchor="middle" opacity=".8">Every agent</text>
+  <rect x="16" y="68" width="336" height="200" rx="8" stroke-width="2.5"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="32" y="104"><tspan font-weight="600">Checks</tspan>  Every received mail and send</text>
+    <text x="32" y="148"><tspan font-weight="600">How</tspan>  Deterministic rules, 14 languages</text>
+    <text x="32" y="192"><tspan font-weight="600">Result</tspan>  Quarantine, or owner approval</text>
+    <text x="32" y="236"><tspan font-weight="600">Decides</tspan>  Yes, this layer decides</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="360" y1="20" x2="360" y2="276" stroke-width="1" stroke-dasharray="4 6" opacity=".4"/>
+
+  <!-- Right panel -->
+  <text x="536" y="30" fill="currentColor" stroke="none" font-size="16" font-weight="600" text-anchor="middle">AI suspicious-mail watch</text>
+  <text x="536" y="52" fill="currentColor" stroke="none" font-size="13" text-anchor="middle" opacity=".8">Organizations that turn it on (beta)</text>
+  <rect x="368" y="68" width="336" height="200" rx="8" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="384" y="104"><tspan font-weight="600">Checks</tspan>  Subject and part of the body</text>
+    <text x="384" y="148"><tspan font-weight="600">How</tspan>  An AI classifier model</text>
+    <text x="384" y="192"><tspan font-weight="600">Result</tspan>  A warning mark, nothing more</text>
+    <text x="384" y="236"><tspan font-weight="600">Decides</tspan>  No, never in the decision path</text>
+  </g>
+
+  <!-- Note -->
+  <rect x="160" y="300" width="400" height="40" rx="6" stroke-width="1.5" stroke-dasharray="4 4" opacity=".6"/>
+  <text x="360" y="325" fill="currentColor" stroke="none" font-size="13" text-anchor="middle" opacity=".8">Turn the AI watch off: the baseline stays the same</text>
+</svg>

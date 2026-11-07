@@ -1,0 +1,1 @@
+Hi Jin, once the load test finishes, please send the results to minji@acme.example and post the summary in the team channel.

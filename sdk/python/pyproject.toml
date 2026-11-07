@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# PyPI 배포 이름은 `atmark-sdk`(`atmark` 은 다른 프로젝트 것) — import 이름은 `atmark`.
+name = "atmark-sdk"
+version = "0.1.1"
+description = "Atmark SDK — email and identity for AI agents (REST, realtime, webhook verification). Standard library only."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "SHAKA (Younkyum Jin)", email = "support@atmark.ai" }]
+keywords = ["atmark", "email", "ai-agent", "agent-identity", "mcp", "webhooks", "realtime", "sdk"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Communications :: Email",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+realtime = ["websockets>=12"]
+
+[project.urls]
+Homepage = "https://atmark.ai"
+Documentation = "https://docs.atmark.ai/en/connect/sdks"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+atmark = ["py.typed"]

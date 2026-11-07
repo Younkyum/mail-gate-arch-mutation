@@ -1,0 +1,8 @@
+Two-factor authentication enabled
+
+You've enabled two-factor authentication on your Dropbox account. Here are your backup codes:
+
+  5k2f-9d8s   1p0q-7w3e   8z6x-4c2v
+
+Store these backup codes somewhere safe. Each code can only be used once.
+Do not share your backup codes with anyone. We'll email a new set of codes to jin@example.com if you regenerate them.

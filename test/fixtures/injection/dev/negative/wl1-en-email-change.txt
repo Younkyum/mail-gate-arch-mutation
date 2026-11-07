@@ -1,0 +1,8 @@
+Confirm email change
+
+We received a request to change the email on your Stripe account from old@example.com to new@example.com.
+To confirm, enter the verification code below. We also sent a notification to old@example.com.
+
+Verification code: 551 093
+
+If you didn't make this change, contact us immediately and secure your account.

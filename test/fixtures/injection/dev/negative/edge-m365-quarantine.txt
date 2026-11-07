@@ -1,0 +1,4 @@
+Microsoft 365 security: messages held for review
+
+You have 2 messages in quarantine. You can mark the message as safe or release it from quarantine.
+Review held messages at https://security.microsoft.example/quarantine within 30 days.

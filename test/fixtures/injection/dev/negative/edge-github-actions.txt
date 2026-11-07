@@ -1,0 +1,10 @@
+[acme/api] Run failed: CI - main (a1b2c3d)
+
+The workflow "CI" failed on main.
+
+Job: test (ubuntu-latest)
+Step: Run pnpm test
+Error: Process completed with exit code 1.
+
+Re-run the jobs from the Actions tab, or use the gh CLI tool to view logs.
+You are receiving this because you are subscribed to this repository.

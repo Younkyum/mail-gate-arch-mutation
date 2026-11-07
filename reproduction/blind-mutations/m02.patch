@@ -1,0 +1,48 @@
+diff --git a/src/workers/followup-sender.ts b/src/workers/followup-sender.ts
+new file mode 100644
+index 0000000..ca00246
+--- /dev/null
++++ b/src/workers/followup-sender.ts
+@@ -0,0 +1,42 @@
++/**
++ * Follow-up sender — sends an agent's queued follow-up message (a reminder to a thread that got no reply).
++ * The original message already passed the gate when it was first sent, so the follow-up goes straight out.
++ */
++
++import { randomUUID } from 'node:crypto';
++
++import { log } from '../observability/logger';
++import { createSesClient, createSesTransport, type SesSendClient } from '../mail/transport/ses-transport';
++import type { AgentId } from '../db/schema';
++
++export const FOLLOWUP_ROUTE_ID = 'followup_send';
++
++export interface FollowupJob {
++  readonly agentId: AgentId;
++  readonly fromAddress: string;
++  readonly recipients: readonly string[];
++  readonly subject: string;
++  readonly text: string;
++}
++
++export interface FollowupSenderDependencies {
++  readonly client?: SesSendClient;
++}
++
++export async function runFollowup(deps: FollowupSenderDependencies, job: FollowupJob): Promise<string> {
++  const transport = createSesTransport({
++    client: deps.client ?? createSesClient(),
++    content: {
++      load: () => Promise.resolve({ subject: job.subject, text: job.text, html: null, threading: null }),
++    },
++  });
++  const messageId = randomUUID();
++  const result = await transport.send({
++    messageId,
++    messageIdHeader: `<${messageId}@atmark.ai>`,
++    fromAddress: job.fromAddress,
++    recipients: job.recipients,
++  });
++  log('info', 'worker.job', { route_id: FOLLOWUP_ROUTE_ID, agent_id: job.agentId, message_id: messageId, outcome: 'sent' });
++  return result.sesMessageId;
++}

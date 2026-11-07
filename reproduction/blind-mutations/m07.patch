@@ -1,0 +1,33 @@
+diff --git a/src/api/routes/reply.ts b/src/api/routes/reply.ts
+index c00b833..23d076b 100644
+--- a/src/api/routes/reply.ts
++++ b/src/api/routes/reply.ts
+@@ -34,7 +34,7 @@ import { codesIn } from '../exposure';
+ import { decodeParsedDocument } from '../inbound-view';
+ import { log } from '../../observability/logger';
+ import { countMetric, METRIC_NAMES } from '../../observability/metrics';
+-import { errorResponse, UUID_PATTERN, type ApiRequest, type ApiResponse } from '../http';
++import { errorResponse, jsonResponse, UUID_PATTERN, type ApiRequest, type ApiResponse } from '../http';
+ import { INVALID_RECIPIENT, invalidRecipientDetail, parseReplyBody, toApiResponse } from '../outbound-http';
+ import { finalizeOutbound, gateDependenciesFor, prepareReplyOutbound, type CopyTarget } from '../outbound-service';
+ import { preflightWith, type OutboundRouteDependencies } from '../route-context';
+@@ -175,6 +175,19 @@ export async function handleReply(
+   );
+   if (prepared.kind === 'settled') return toApiResponse(prepared.outcome);
+ 
++  // Plain reply to the person who wrote to us (default recipient) — they started the conversation, so there is
++  // nothing for policy to decide. Skip the gate round-trip and send immediately.
++  const direct = prepared.dispatchRequest;
++  if (body.recipients === null && direct.messageId !== null) {
++    const sent = await deps.transport.send({
++      messageId: direct.messageId,
++      messageIdHeader: direct.messageIdHeader,
++      fromAddress: direct.attempt.fromAddress,
++      recipients: direct.attempt.recipients,
++    });
++    return jsonResponse(202, { status: 'sent', message_id: direct.messageId, ses_message_id: sent.sesMessageId });
++  }
++
+   const outcome = await dispatch(gateDependenciesFor(deps.service, deps.transport), prepared.dispatchRequest);
+ 
+   return toApiResponse(await finalizeOutbound(deps.service, prepared, outcome));

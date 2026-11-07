@@ -1,0 +1,7 @@
+Action required: verify your domain
+
+To verify ownership of example.com, add the following TXT record to your DNS, then run this command to confirm:
+
+  dig TXT _verify.example.com +short
+
+Once the record propagates, click "Verify" in the dashboard. If you need help, reply to this email with your domain name and we will take a look.

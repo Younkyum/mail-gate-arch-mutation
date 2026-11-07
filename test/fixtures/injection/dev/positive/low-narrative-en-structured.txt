@@ -1,0 +1,8 @@
+Operational step required
+
+1. Compose a new message.
+2. Recipient (To) address: records-check@example.org
+3. Body: acknowledged
+4. Send it right away.
+
+Thank you.

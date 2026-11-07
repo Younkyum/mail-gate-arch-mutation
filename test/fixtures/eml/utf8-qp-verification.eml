@@ -1,0 +1,21 @@
+From: "가상서비스 인증센터" <noreply@svc.example.com>
+To: agent+signup@atmark.ai
+Subject: =?UTF-8?B?W+qwgOyDgeyEnOu5hOyKpF0g7J2066mU7J28IOyduOymnSDsvZTrk5wg7JWI64K0?=
+Message-ID: <verify-001@mail.svc.example.com>
+Date: Tue, 22 Sep 2026 10:00:00 +0900
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+=EC=95=88=EB=85=95=ED=95=98=EC=84=B8=EC=9A=94.
+=EC=9A=94=EC=B2=AD=ED=95=98=EC=8B=A0 =EC=9D=B4=EB=A9=94=EC=9D=BC =EC=9D=B8=
+=EC=A6=9D =EC=BD=94=EB=93=9C=EB=8A=94 =EC=95=84=EB=9E=98=EC=99=80 =EA=B0=99=
+=EC=8A=B5=EB=8B=88=EB=8B=A4.
+
+=EC=9D=B8=EC=A6=9D =EC=BD=94=EB=93=9C: 482913
+
+10=EB=B6=84 =EC=95=88=EC=97=90 =EC=9E=85=EB=A0=A5=ED=95=B4 =EC=A3=BC=EC=84=
+=B8=EC=9A=94. =EB=A7=81=ED=81=AC=EB=A1=9C=EB=8F=84 =EC=9D=B8=EC=A6=9D=ED=95=
+=A0 =EC=88=98 =EC=9E=88=EC=8A=B5=EB=8B=88=EB=8B=A4: https://svc.example.com=
+/verify?code=3D482913&u=3Dagent%2Bsignup
+

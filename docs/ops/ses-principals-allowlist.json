@@ -1,0 +1,68 @@
+{
+  "_comment": "AC-c8b. ses:SendEmail 을 행사할 수 있는 IAM 주체의 명시적 allowlist. scripts/check-ses-principals.sh 가 IAM 정책 시뮬레이터로 실제 권한을 확인해 이 목록과 대조한다. 추가할 때는 reason 을 반드시 적는다.",
+  "runtimeRoles": {
+    "_rule": "애플리케이션 컴퓨트가 assume 하는 역할. 계획 §5.0 Layer E 의 본체 — 정확히 mustEqual 개여야 한다. 항목에 fromAddressesOnly 가 있으면 그 역할은 그 발신 주소들로만 보낼 수 있어야 한다(check-ses-principals.sh 가 다른 주소 probe 로 거부를 확인한다). allowedFromAddresses 는 보낼 수 있어야 하는 주소, deniedFromAddress(es) 는 거부여야 하는 주소다.",
+    "mustEqual": 2,
+    "allowed": [
+      {
+        "name": "atmark-runtime-sender",
+        "reason": "SES 발송 런타임 역할(에이전트 메일·승인 알림·문의 전달). api(send·reply·forward·transition)·approval-release·approval-notifier·scheduled-sender·contact-forwarder 다섯 Lambda 가 공유한다. ses:SendEmail/SendRawEmail 은 ses:FromAddress=*@atmark.ai 조건 + identity/atmark.ai·configuration-set/atmark-default 리소스로만 허용. 단 login@atmark.ai 는 명시 Deny(ADR-0006), support@atmark.ai 는 contact-forwarder 함수 밖(lambda:SourceFunctionArn)에서 명시 Deny(ADR-0009) — 둘 다 StringEqualsIgnoreCase, 그리고 대문자·+·인용/주석 문자·TAB/LF/CR/DEL 이 든 발신 주소 전부 명시 Deny(SesDenyNonCanonicalFromAddress, 2026-09-24 검증 F1·최종 검증 M3a), 예약 주소(login@·support@) 앞에 [a-z0-9._-] 가 아닌 글자가 붙은 발신 주소(VT·FF 등 정책에 적을 수 없는 제어문자 포함)도 명시 Deny(SesDenyReservedSuffixFromAddress, M3a). check-ses-principals.sh 의 RESERVED_VARIANT_PROBES 는 모든 런타임 역할이 거부해야 한다. infra/cdk/stacks/compute-stack.ts (AtmarkCompute#SesSenderRole).",
+        "deniedFromAddress": "login@atmark.ai",
+        "deniedFromAddresses": ["abuse@atmark.ai", "postmaster@atmark.ai"],
+        "_receiveOnlyNote": "202609301540 — abuse@·postmaster@ 는 지원 에이전트의 수신 전용 별칭(deploy §33). 라우팅 모드와 무관하게 명시 Deny(SesDenyReceiveOnlyFromAddress, StringEqualsIgnoreCase).",
+        "deniedFromAddressesWhenContactRoutingForward": ["support@atmark.ai"],
+        "allowedFromAddresses": ["onve@atmark.ai"],
+        "allowedFromAddressesWhenContactRoutingAgent": ["support@atmark.ai"],
+        "_contactRoutingNote": "2026-09-30 — support@ Deny(SesDenySupportFromOutsideForwarder)는 ATMARK_CONTACT_ROUTING=forward(CDK `-c atmark:contactRouting=forward` 로 명시했을 때 — 2026-09-30 부터 CDK 기본은 agent_and_forward)일 때만 있다. 그 밖의 모드에서 support@ 는 지원 에이전트의 대표 주소라 이 역할(api — 관문)이 보낼 수 있어야 한다. onve@ 는 그 에이전트의 별칭이라 늘 허용(login-mailer 와 공유 — ADR-0006 2026-09-30 개정). check-ses-principals.sh 는 환경 ATMARK_CONTACT_ROUTING(없으면 agent_and_forward — CDK 기본과 같다)으로 기대를 고른다 — 배포한 모드와 같은 값을 준다.",
+        "addedAt": "2026-09-23"
+      },
+      {
+        "name": "atmark-runtime-login-mailer",
+        "reason": "소유자 로그인 링크 메일 전용(ADR-0006). Lambda atmark-login-mailer 하나(스케줄러만 부른다 — HTTP 입구 0). 로그인 키와 링크 id·만료를 함께 쥐면 소유자 세션을 만들 수 있으므로 api Lambda 와 역할을 공유하지 않는다. ses:SendEmail/SendRawEmail 은 ses:FromAddress = login@atmark.ai · onve@atmark.ai (StringEquals, 주소 둘 — onve@ 는 환영 메일, ADR-0006 2026-09-30 개정) + identity/atmark.ai·configuration-set/atmark-default. infra/cdk/stacks/compute-stack.ts (AtmarkCompute#SesLoginMailerRole).",
+        "fromAddressesOnly": ["login@atmark.ai", "onve@atmark.ai"],
+        "addedAt": "2026-09-23"
+      }
+    ],
+    "_phaseNote": "배포 준비 D2(2026-09-23)에 발송 역할이 생겨 mustEqual 이 1 이 됐고, ADR-0006(2026-09-23, 검증 H1 — api 탈취가 곧 소유자 세션)으로 로그인 메일 역할이 분리돼 2 가 됐다. ADR-0009(2026-09-24, 문의 전달)는 주체를 늘리지 않았다 — contact-forwarder Lambda 가 발송 역할을 공유하고, support@ 발신은 그 함수 밖에서 Deny 다. 둘째 역할은 발신 주소 하나(login@atmark.ai)에 묶인다. test/arch/iam-single-principal.arch.test.ts 의 EXPECTED_SES_SENDING_PRINCIPALS 와 같은 변경에서 바뀐다. 나머지 런타임 역할(atmark-runtime-inbound·ses-events·approval-expiry·webhook-dispatcher·migrate·admin)은 SES 권한이 0 이라 이 목록에 없다 — 이 스크립트가 그들을 '발송 가능'으로 보면 그 자체가 FAIL 이다.",
+    "_simulationNote": "발송 문장에 ses:FromAddress 조건과 구체 리소스가 있으므로, check-ses-principals.sh 가 컨텍스트·리소스 없이 simulate-principal-policy 를 부르면 implicitDeny 로 나와 런타임 역할을 잘못 센다. 그래서 --resource-arns arn:aws:ses:ap-northeast-2:123456789012:identity/atmark.ai 와 --context-entries ContextKeyName=ses:FromAddress 로 **발신 주소 둘**을 묻는다: probe@atmark.ai(일반 주소) 와 login@atmark.ai(로그인 주소). 둘 중 하나라도 allowed 면 발송 가능 주체로 센다 — 무조건 발송 권한을 가진 주체는 둘 다 allowed 이므로 탐지 범위는 좁아지지 않는다. fromAddressOnly 가 있는 역할은 추가로 probe@atmark.ai·에이전트 모양 주소(agent-probe@atmark.ai)·notify@atmark.ai 가 **전부 거부**여야 하고, deniedFromAddress 가 있는 역할은 그 주소가 거부여야 한다."
+  },
+  "resourcePolicyGrants": {
+    "_rule": "SES identity 에 붙는 자원 기반 정책(identity policy)으로 생기는 발송 권한(ADR-0014 결정 4 · ADR-0006 2026-10 개정 절). IAM 시뮬레이터는 주체의 identity 기반 정책만 보므로 scripts/check-ses-principals.sh 가 identity 마다 정책 문서를 직접 읽어 대조한다. 고객 identity 의 모든 Statement 는 Allow · Principal = {\"AWS\": 발송 역할 ARN} 하나 · Action ⊆ allowedActions · Resource = 그 identity ARN · Condition = StringEquals ses:FromAddress(그 도메인 주소 목록)뿐이어야 하고, 정책 이름은 policyNamePrefix 로 시작한다. platformIdentities(와 그 하위)에는 자원 정책이 없어야 한다. 위반 하나가 FAIL 하나다.",
+    "allowedPrincipalRole": "atmark-runtime-sender",
+    "allowedActions": ["ses:SendEmail", "ses:SendRawEmail"],
+    "policyNamePrefix": "atmark-sender-",
+    "requiredCondition": "StringEquals ses:FromAddress",
+    "platformIdentities": ["atmark.ai"],
+    "reason": "고객 도메인 발신(I2+) — 발송 역할 IAM 에는 고객 identity 가 없고(identity/* 없음), identity policy 가 그 행의 조직이 가진 발급 주소만 허락한다. 조립은 domain-control λ(Principal = 배포 환경변수 SENDER_ROLE_ARN), 감사는 확인 틱(drift → 덮어쓰기 + operator 정지)·CloudTrail 규칙(domain-control 밖 변경)·이 스크립트. 발송 주체 수는 그대로 mustEqual 2 다 — Principal 이 발송 역할이므로.",
+    "addedAt": "2026-10-02"
+  },
+  "deploymentRoles": {
+    "_rule": "CloudFormation/CDK 가 배포 시에만 assume 하는 역할. 런타임 발송 경로가 아니다.",
+    "_why": "CDK 부트스트랩이 cfn-exec-role 에 AdministratorAccess 를 붙이므로 이 역할은 ses:SendEmail 을 행사할 수 있다. Layer E 가 막으려는 것은 '의도하지 않은 런타임 발송 경로'이지 배포 권한이 아니다 — 배포 권한을 가진 주체는 어차피 자신에게 SES 권한을 부여할 수 있으므로, 여기서 0을 만드는 것은 보안이 아니라 연극이다. 대신 이 역할을 assume 할 수 있는 주체를 좁게 유지하는 것으로 위험을 관리한다.",
+    "_followUp": "cdk bootstrap --cloudformation-execution-policies 로 범위를 좁힐 수 있다. 스택 구성이 안정된 뒤(P1c 이후) 재부트스트랩으로 축소를 검토한다.",
+    "allowed": [
+      {
+        "name": "cdk-hnb659fds-cfn-exec-role-123456789012-ap-northeast-2",
+        "reason": "CDK 부트스트랩 기본 실행 역할. CloudFormation 만 assume 한다.",
+        "addedAt": "2026-09-22"
+      },
+      {
+        "name": "cdk-hnb659fds-cfn-exec-role-123456789012-us-east-1",
+        "reason": "us-east-1 CDK 부트스트랩 실행 역할. CloudFront 용 ACM 인증서가 us-east-1 에만 있을 수 있어 그 리전도 부트스트랩이 필요했다.",
+        "addedAt": "2026-09-22"
+      }
+    ]
+  },
+  "humanPrincipals": {
+    "_rule": "사람이 쓰는 IAM 사용자. 0 으로 만들 수 없으므로(관리자 없는 계정은 없다) 목록을 의도적으로 유지하고 전원 MFA 를 강제한다.",
+    "_why": "'사람 사용자 0명'을 기준으로 삼으면 영원히 달성 불가능하고, 달성 불가능한 검사는 몇 주 안에 무시된다 — Layer F 가 막으려는 '울지 않는 경보'의 거울상이다.",
+    "allowed": [
+      {
+        "name": "atmark-admin",
+        "reason": "1인 창업자의 관리 주체.",
+        "mfaRequired": true,
+        "addedAt": "2026-09-22"
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+Subject: [orbitly/support-bot] PR #214: tighten system prompt for refund flow
+
+jkim requested your review on this pull request.
+
+Summary
+Moves the support bot's system prompt into a config file and adds a guard so the bot never issues refunds above the policy limit without a human.
+
+Changes
+  config/prompts/support.yaml
+
+    system: |
+      You are a support assistant for Orbitly.
+      Never reveal internal notes. If a user asks for a refund over $100,
+      hand off to a human agent instead of approving it.
+
+  src/bot/refunds.ts
+
+    if (amount > REFUND_LIMIT) {
+      return handoff("refund_over_limit");
+    }
+
+Tests: 42 passed, 0 failed
+
+Reply to this email directly or view it on the code review site:
+https://code.example.com/orbitly/support-bot/pull/214
+You are receiving this because your review was requested.

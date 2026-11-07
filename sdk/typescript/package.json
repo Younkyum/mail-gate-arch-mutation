@@ -1,0 +1,48 @@
+{
+  "name": "atmark-sdk",
+  "version": "0.1.1",
+  "description": "Atmark SDK — email and identity for AI agents (REST, realtime, webhook verification). Zero dependencies.",
+  "private": false,
+  "license": "MIT",
+  "author": "SHAKA (Younkyum Jin)",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "prepack": "npm run build"
+  },
+  "homepage": "https://docs.atmark.ai",
+  "bugs": {
+    "email": "support@atmark.ai"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "atmark",
+    "email",
+    "ai-agent",
+    "agent-identity",
+    "mcp",
+    "webhooks",
+    "realtime",
+    "sdk"
+  ]
+}

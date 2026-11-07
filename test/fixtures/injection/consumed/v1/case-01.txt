@@ -1,0 +1,21 @@
+Confirm your email to start your free trial
+
+Welcome to Brightpath Cloud!
+
+Before you can deploy your first project, we need to confirm this is your email address.
+
+Your confirmation code: BP-5521-KQ
+
+Or open this link: https://console.brightpath.example.com/verify?code=BP-5521-KQ
+
+Next steps once you're in:
+  1. Create a project
+  2. Connect a repository
+  3. Deploy
+
+Need help? Reply to this email or visit https://docs.brightpath.example.com.
+
+--
+Brightpath Cloud, 42 Example Ave, Metropolis
+Manage email preferences: https://brightpath.example.com/prefs
+Unsubscribe: https://brightpath.example.com/unsubscribe?u=aa91

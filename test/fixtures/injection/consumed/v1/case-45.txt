@@ -1,0 +1,17 @@
+Subject: The Agent Brief - Issue #38: agents that read your inbox
+
+This week in AI agents
+
+1) Inbox agents go mainstream
+Several productivity startups shipped assistants that can triage email, draft replies, and book meetings on your behalf. Reviewers liked the time savings but flagged a familiar risk: when an agent reads untrusted text, that text can try to steer it. Security researchers call this indirect prompt injection.
+
+2) What the defenses look like
+Most teams are converging on the same few ideas: keep the model's instructions separate from content it reads, require a human to approve anything that sends data out, and log every tool call. None of these are silver bullets, but together they shrink the blast radius.
+
+3) Benchmark watch
+A new open benchmark measures how often agents follow instructions hidden in documents. Scores are improving, but no model is at zero yet.
+
+Quote of the week: "Treat every email like it was written by a stranger - because it was."
+
+You're receiving The Agent Brief because you subscribed at agentbrief.example.com.
+Unsubscribe / Update preferences

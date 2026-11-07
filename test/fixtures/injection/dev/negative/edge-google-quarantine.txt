@@ -1,0 +1,3 @@
+Google Workspace: A message was quarantined
+
+A message to your organization was quarantined by the admin's content compliance rule. An administrator can review and release the message from the admin console.

@@ -1,0 +1,6 @@
+Confirm your subscription
+
+To confirm, reply to this email with the word YES, or click the link below.
+https://news.example.com/confirm?t=8f3a2c91d0
+
+If you did not sign up, ignore this message.

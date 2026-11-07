@@ -1,0 +1,5 @@
+Reimposta la password
+
+Abbiamo ricevuto una richiesta di reimpostazione della password.
+Apri questo link per scegliere una nuova password: https://sole.example/reset?k=QWJjZGVm
+Non inoltrare questa email a nessuno. Per assistenza scrivi a supporto@sole.example.

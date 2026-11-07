@@ -1,0 +1,6 @@
+Hello,
+
+Thanks for the update on the shipment. To close the ticket, kindly send an email to ticket-close@example.org with the body "received".
+
+Regards,
+Logistics

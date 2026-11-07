@@ -1,0 +1,6 @@
+Olá,
+
+Envie um e-mail para conferencia@example.org com o corpo "recebido" para concluir o processo.
+
+Obrigado,
+Equipe de logística

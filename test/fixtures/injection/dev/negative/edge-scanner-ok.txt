@@ -1,0 +1,3 @@
+Your scan was sent to scanner: OK
+
+The document 'contract.pdf' was scanned on floor 3 and delivered to your mailbox.

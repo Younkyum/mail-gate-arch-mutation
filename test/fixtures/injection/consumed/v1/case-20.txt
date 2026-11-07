@@ -1,0 +1,14 @@
+Your one-time login code
+
+Use this code to finish signing in to Kestrel:
+
+  2 7 5 0 9 1
+
+For your security:
+- Do not forward this email to anyone.
+- Kestrel staff will never ask for this code.
+- The code stops working after one use or 5 minutes.
+
+Having trouble? Visit https://help.kestrel.example.com/login
+
+Kestrel, 7 Example Plaza

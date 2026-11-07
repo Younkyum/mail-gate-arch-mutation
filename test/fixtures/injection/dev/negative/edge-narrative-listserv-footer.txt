@@ -1,0 +1,4 @@
+_______________________________________________
+Users mailing list
+For more info, send a message to users-request@lists.example.org containing just the word 'help' in the message body, and an email will be sent to you with instructions.
+To unsubscribe, send an email to users-request@lists.example.org with the word "unsubscribe" in the body.

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 500" role="img" aria-labelledby="fig-b-title fig-b-desc" font-family="inherit" fill="none" stroke="currentColor">
+  <title id="fig-b-title">The first-experience flow: deny, allow, reply</title>
+  <desc id="fig-b-desc">Seven steps from top to bottom. 1, create an agent. 2, connect it to Claude Code over MCP. 3, email it from your inbox and have it read the message. 4, it tries to reply and is denied with recipient_not_allowlisted. 5, the owner adds their address to the send allowlist. 6, the agent replies again with a new idempotency_key and the reply is sent. A bracket marks steps 4 to 6 as the deny, allow, reply loop. 7, route one real alert to the agent's address.</desc>
+
+  <!-- Step boxes: x=40, width=440, height=48, pitch=68 -->
+  <g stroke-width="1.5">
+    <rect x="40" y="16" width="440" height="48" rx="8"/>
+    <rect x="40" y="84" width="440" height="48" rx="8"/>
+    <rect x="40" y="152" width="440" height="48" rx="8"/>
+    <rect x="40" y="220" width="440" height="48" rx="8" stroke-dasharray="6 4"/>
+    <rect x="40" y="288" width="440" height="48" rx="8"/>
+    <rect x="40" y="356" width="440" height="48" rx="8" stroke-width="2.5"/>
+    <rect x="40" y="436" width="440" height="48" rx="8"/>
+  </g>
+
+  <!-- Number badges -->
+  <g stroke-width="1.5">
+    <circle cx="68" cy="40" r="13"/>
+    <circle cx="68" cy="108" r="13"/>
+    <circle cx="68" cy="176" r="13"/>
+    <circle cx="68" cy="244" r="13"/>
+    <circle cx="68" cy="312" r="13"/>
+    <circle cx="68" cy="380" r="13"/>
+    <circle cx="68" cy="460" r="13"/>
+  </g>
+  <g fill="currentColor" stroke="none" font-size="13" font-weight="600" text-anchor="middle">
+    <text x="68" y="45">1</text>
+    <text x="68" y="113">2</text>
+    <text x="68" y="181">3</text>
+    <text x="68" y="249">4</text>
+    <text x="68" y="317">5</text>
+    <text x="68" y="385">6</text>
+    <text x="68" y="465">7</text>
+  </g>
+
+  <!-- Labels -->
+  <g fill="currentColor" stroke="none" font-size="14">
+    <text x="96" y="45">Create an agent: scout@atmark.ai</text>
+    <text x="96" y="113">Connect it to Claude Code over MCP</text>
+    <text x="96" y="181">Email it from your inbox; it reads the message</text>
+    <text x="96" y="249">It tries to reply: <tspan font-weight="600">denied</tspan>, recipient_not_allowlisted</text>
+    <text x="96" y="317">You add your address to the send allowlist</text>
+    <text x="96" y="385">It replies again: <tspan font-weight="600">sent</tspan></text>
+    <text x="96" y="465">Route one real alert to its address</text>
+  </g>
+
+  <!-- Down arrows between boxes -->
+  <g stroke-width="1.5">
+    <line x1="260" y1="64" x2="260" y2="82"/><path d="M255 77 L260 83 L265 77"/>
+    <line x1="260" y1="132" x2="260" y2="150"/><path d="M255 145 L260 151 L265 145"/>
+    <line x1="260" y1="200" x2="260" y2="218"/><path d="M255 213 L260 219 L265 213"/>
+    <line x1="260" y1="268" x2="260" y2="286"/><path d="M255 281 L260 287 L265 281"/>
+    <line x1="260" y1="336" x2="260" y2="354"/><path d="M255 349 L260 355 L265 349"/>
+    <line x1="260" y1="404" x2="260" y2="434"/><path d="M255 429 L260 435 L265 429"/>
+  </g>
+
+  <!-- Loop bracket: steps 4 to 6 -->
+  <path d="M488 244 H512 V380 H488" stroke-width="1.5"/>
+  <path d="M494 239 L487 244 L494 249" stroke-width="1.5"/>
+  <g fill="currentColor" stroke="none" font-size="13">
+    <text x="524" y="300">same reply,</text>
+    <text x="524" y="318">tried again with a</text>
+    <text x="524" y="336">new idempotency_key</text>
+  </g>
+</svg>

@@ -1,0 +1,1 @@
+티켓 종료를 위해 close@ticket-kr.example 로 본문 "수신완료" 를 보내 주세요.

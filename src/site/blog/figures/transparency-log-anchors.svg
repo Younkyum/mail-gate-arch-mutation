@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 240" role="img" aria-labelledby="fig-c-title fig-c-desc" font-family="inherit" fill="none" stroke="currentColor">
+  <title id="fig-c-title">From a send decision to a public anchor</title>
+  <desc id="fig-c-desc">Send decisions, received-mail verdicts and console actions become hashed entries in a hash-chained log. Every hour a signed checkpoint of the log is published at id.atmark.ai/log. Once a day a checkpoint is submitted to OpenTimestamps for a Bitcoin proof. Atmark does not check the Bitcoin block header itself; you can, with ots verify. The same checkpoint is recorded in Sigstore's Rekor log. The log holds hashes, not mail contents.</desc>
+
+  <!-- Column 1: events -->
+  <text x="96" y="28" fill="currentColor" stroke="none" font-size="13" font-weight="600" text-anchor="middle">What happens</text>
+  <g stroke-width="1.5">
+    <rect x="16" y="48" width="160" height="40" rx="6"/>
+    <rect x="16" y="104" width="160" height="40" rx="6"/>
+    <rect x="16" y="160" width="160" height="40" rx="6"/>
+  </g>
+  <g fill="currentColor" stroke="none" font-size="13" text-anchor="middle">
+    <text x="96" y="73">Send decision</text>
+    <text x="96" y="129">Received-mail verdict</text>
+    <text x="96" y="185">Console action</text>
+  </g>
+  <g stroke-width="1.5">
+    <path d="M176 68 C188 68 188 124 200 124"/>
+    <line x1="176" y1="124" x2="200" y2="124"/>
+    <path d="M176 180 C188 180 188 124 200 124"/>
+    <line x1="200" y1="124" x2="212" y2="124"/><path d="M207 119 L213 124 L207 129"/>
+  </g>
+
+  <!-- Column 2: hash chain -->
+  <text x="300" y="28" fill="currentColor" stroke="none" font-size="13" font-weight="600" text-anchor="middle">Hashed entries</text>
+  <g stroke-width="1.5">
+    <rect x="220" y="104" width="40" height="40" rx="4"/>
+    <rect x="280" y="104" width="40" height="40" rx="4"/>
+    <rect x="340" y="104" width="40" height="40" rx="4"/>
+    <line x1="260" y1="124" x2="280" y2="124"/>
+    <line x1="320" y1="124" x2="340" y2="124"/>
+  </g>
+  <g fill="currentColor" stroke="none" font-size="12" text-anchor="middle">
+    <text x="240" y="128">#</text>
+    <text x="300" y="128">#</text>
+    <text x="360" y="128">#</text>
+    <text x="300" y="172" opacity=".8">hashes, not</text>
+    <text x="300" y="188" opacity=".8">mail contents</text>
+  </g>
+  <line x1="380" y1="124" x2="420" y2="124" stroke-width="1.5"/><path d="M415 119 L421 124 L415 129" stroke-width="1.5"/>
+  <text x="400" y="112" fill="currentColor" stroke="none" font-size="12" text-anchor="middle">hourly</text>
+
+  <!-- Column 3: checkpoint -->
+  <text x="500" y="28" fill="currentColor" stroke="none" font-size="13" font-weight="600" text-anchor="middle">Signed checkpoint</text>
+  <rect x="424" y="96" width="152" height="56" rx="6" stroke-width="2"/>
+  <g fill="currentColor" stroke="none" font-size="13" text-anchor="middle">
+    <text x="500" y="120">published at</text>
+    <text x="500" y="138">id.atmark.ai/log</text>
+  </g>
+  <g stroke-width="1.5">
+    <path d="M576 124 C590 124 590 76 600 76"/><path d="M595 71 L601 76 L595 81"/>
+    <path d="M576 124 C590 124 590 196 600 196"/><path d="M595 191 L601 196 L595 201"/>
+  </g>
+  <text x="500" y="176" fill="currentColor" stroke="none" font-size="12" text-anchor="middle">anchored once a day</text>
+
+  <!-- Column 4: anchors -->
+  <text x="660" y="28" fill="currentColor" stroke="none" font-size="13" font-weight="600" text-anchor="middle">Anchors</text>
+  <g stroke-width="1.5">
+    <rect x="604" y="48" width="112" height="56" rx="6"/>
+    <rect x="604" y="168" width="112" height="56" rx="6"/>
+  </g>
+  <g fill="currentColor" stroke="none" font-size="12" text-anchor="middle">
+    <text x="660" y="72">OpenTimestamps</text>
+    <text x="660" y="90" opacity=".8">Bitcoin proof</text>
+    <text x="660" y="192">Sigstore</text>
+    <text x="660" y="210" opacity=".8">Rekor log</text>
+  </g>
+</svg>

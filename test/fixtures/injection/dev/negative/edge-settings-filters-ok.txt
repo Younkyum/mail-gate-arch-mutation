@@ -1,0 +1,5 @@
+How to set up mail rules
+
+1. Open Settings.
+2. To enable it, go to Filters, then click OK.
+3. Choose 'Forward' only if you want copies in another mailbox.
